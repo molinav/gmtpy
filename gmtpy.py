@@ -3245,7 +3245,7 @@ class GMT:
 
     def label_font(self):
         if self.is_gmt5():
-            return font_tab_rev(self.gmt_config['FONT_LABEL'].split(',')[1])
+            return font_tab_rev[self.gmt_config['FONT_LABEL'].split(',')[1]]
         else:
             return self.gmt_config['LABEL_FONT']
 

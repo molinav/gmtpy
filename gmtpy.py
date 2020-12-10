@@ -299,18 +299,16 @@ _gmt_installations = {}
 # ... or let GmtPy autodetect GMT via $PATH and $GMTHOME
 
 
-def cmp_version(a, b):
-    ai = [int(x) for x in a.split('.')]
-    bi = [int(x) for x in b.split('.')]
-    return cmp(ai, bi)
+def key_version(a):
+    return tuple(int(x) for x in a.split('.'))
 
 
 def newest_installed_gmt_version():
-    return sorted(_gmt_installations.keys(), cmp=cmp_version)[-1]
+    return sorted(_gmt_installations.keys(), key=key_version)[-1]
 
 
 def all_installed_gmt_versions():
-    return sorted(_gmt_installations.keys(), cmp=cmp_version)
+    return sorted(_gmt_installations.keys(), key=key_version)
 
 
 # To have consistent defaults, they are hardcoded here and should not be
@@ -1202,13 +1200,12 @@ def detect_gmt_installations():
 
 def appropriate_defaults_version(version):
 
-    avails = sorted(_gmt_defaults_by_version.keys(), cmp=cmp_version)
+    avails = sorted(_gmt_defaults_by_version.keys(), key=key_version)
     for iavail, avail in enumerate(avails):
-        c = cmp_version(version, avail)
-        if c == 0:
+        if key_version(version) == key_version(avail):
             return version
 
-        elif c == -1:
+        elif key_version(version) < key_version(avail):
             return avails[max(0, iavail-1)]
 
     return avails[-1]

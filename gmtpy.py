@@ -1487,7 +1487,7 @@ def loadgrd(filename):
     from scipy.io import netcdf
 
     nc = netcdf.netcdf_file(filename, 'r')
-    vkeys = nc.variables.keys()
+    vkeys = list(nc.variables.keys())
     kx = 'x'
     ky = 'y'
     if 'lon' in vkeys:

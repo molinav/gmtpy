@@ -4281,12 +4281,19 @@ def nice_palette(gmt, widget, scaleguru, cptfile, zlabeloffset=0.8*inch,
                      par_ax['zlabel'])],
             *widget.JXY())
 
+
 if __name__ == '__main__':
 
     examples_dir = 'gmtpy_module_examples'
     if os.path.exists(examples_dir):
         shutil.rmtree(examples_dir)
     os.mkdir(examples_dir)
+
+    ### Define compat names.
+
+    PS_MEDIA = 'PS_MEDIA' if is_gmt5() else 'PAPER_MEDIA'
+    PS_PAGE_COLOR = 'PS_PAGE_COLOR' if is_gmt5() else 'PAGE_COLOR'
+    MAP_DEFAULT_PEN = 'MAP_DEFAULT_PEN' if is_gmt5() else 'BASEMAP_FRAME_RGB'
 
     ### Example 0
 
@@ -4305,8 +4312,8 @@ if __name__ == '__main__':
 
     ### Example 2
 
-    gmt = GMT(
-        config=dict(PAPER_MEDIA='Custom_%ix%i' % (int(7*inch), int(7*inch))))
+    conf = {PS_MEDIA: 'Custom_%ix%i' % (int(7*inch), int(7*inch))}
+    gmt = GMT(config=conf)
 
     gmt.pscoast(
         R='g',
@@ -4340,7 +4347,7 @@ if __name__ == '__main__':
 
     ### Example 3
 
-    conf = {'PAGE_COLOR': '0/0/0', 'BASEMAP_FRAME_RGB': '255/255/255'}
+    conf = {PS_PAGE_COLOR: '0/0/0', MAP_DEFAULT_PEN: '255/255/255'}
     gmt = GMT(config=conf)
     widget = gmt.default_layout().get_widget()
     gmt.psbasemap(
@@ -4367,8 +4374,8 @@ if __name__ == '__main__':
              scaled_unit_factor=1e9, approx_ticks=5, space=0.05)
 
     guru = ScaleGuru([(x, y1), (x, y2)], axes=(xax, yax))
-    gmt = GMT(
-        config={'PAPER_MEDIA': 'Custom_%ix%i' % (int(8*inch), int(3*inch))})
+    conf = {PS_MEDIA: 'Custom_%ix%i' % (int(8*inch), int(3*inch))}
+    gmt = GMT(config=conf)
     layout = gmt.default_layout()
     widget = layout.get_widget()
 
@@ -4400,7 +4407,7 @@ if __name__ == '__main__':
 
     ### Example 6
 
-    gmt = GMT(config={'PAPER_MEDIA': 'a3'})
+    gmt = GMT(config={PS_MEDIA: 'a3'})
     nx, ny = 2, 5
     grid = GridLayout(nx, ny)
 

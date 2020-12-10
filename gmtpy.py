@@ -1652,6 +1652,9 @@ class Guru:
     ``"%(key)x"``-substitutions. The deriving class must also provide a dict
     with the templates.'''
 
+    def __init__(self):
+        self.templates = {}
+
     def fill(self, templates, **kwargs):
         params = self.get_params(**kwargs)
         strings = [t % params for t in templates]
@@ -2064,7 +2067,15 @@ class ScaleGuru(Guru):
     '''
 
     def __init__(self, data_tuples=None, axes=None, aspect=None,
-                 percent_interval=None):
+                 percent_interval=None, copy_from=None):
+
+        Guru.__init__(self)
+
+        if copy_from:
+            self.templates = copy.deepcopy(copy_from.templates)
+            self.axes = copy.deepcopy(copy_from.axes)
+            self.data_ranges = copy.deepcopy(copy_from.data_ranges)
+            self.aspect = copy_from.aspect
 
         if percent_interval is not None:
             from scipy.stats import scoreatpercentile as scap
@@ -2165,6 +2176,9 @@ class ScaleGuru(Guru):
 
         self.data_ranges = data_ranges
         self.aspect = aspect
+
+    def copy(self):
+        return ScaleGuru(copy_from=self)
 
     def get_params(self, ax_projection=False):
 
@@ -2289,6 +2303,8 @@ class Widget(Guru):
     def __init__(self, horizontal=None, vertical=None, parent=None):
 
         '''Create new widget.'''
+
+        Guru.__init__(self)
 
         self.templates = dict(
             X='-Xa%(xoffset)gp',
@@ -3941,11 +3957,11 @@ class Simple:
 
     def setup_scaling_extra(self, scaler, conf):
 
-        scaler_x = copy.deepcopy(scaler)
+        scaler_x = scaler.copy()
         scaler_x.data_ranges[1] = (0., 1.)
         scaler_x.axes[1].mode = 'off'
 
-        scaler_y = copy.deepcopy(scaler)
+        scaler_y = scaler.copy()
         scaler_y.data_ranges[0] = (0., 1.)
         scaler_y.axes[0].mode = 'off'
 

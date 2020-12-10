@@ -14,13 +14,16 @@
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
 
+from __future__ import print_function
 import subprocess
-from cStringIO import StringIO
+try:
+    from StringIO import StringIO as BytesIO
+except ImportError:
+    from io import BytesIO
 import re
 import os
 import sys
 import shutil
-from itertools import izip
 from os.path import join as pjoin
 import tempfile
 import random
@@ -30,8 +33,23 @@ import numpy as num
 import copy
 from select import select
 
-find_bb = re.compile(r'%%BoundingBox:((\s+[-0-9]+){4})')
-find_hiresbb = re.compile(r'%%HiResBoundingBox:((\s+[-0-9.]+){4})')
+try:
+    newstr = unicode
+except NameError:
+    newstr = str
+
+find_bb = re.compile(br'%%BoundingBox:((\s+[-0-9]+){4})')
+find_hiresbb = re.compile(br'%%HiResBoundingBox:((\s+[-0-9.]+){4})')
+
+
+encoding_gmt_to_python = {
+    'isolatin1+': 'iso-8859-1',
+    'standard+': 'ascii',
+    'isolatin1': 'iso-8859-1',
+    'standard': 'ascii'}
+
+for i in range(1, 11):
+    encoding_gmt_to_python['iso-8859-%i' % i] = 'iso-8859-%i' % i
 
 
 def have_gmt():
@@ -145,16 +163,16 @@ def replace_bbox(bbox, *args):
 
     def repl(m):
         if m.group(1):
-            return '%%HiResBoundingBox: ' + ' '.join(
-                '%.3f' % float(x) for x in bbox)
+            return ('%%HiResBoundingBox: ' + ' '.join(
+                '%.3f' % float(x) for x in bbox)).encode('ascii')
         else:
-            return '%%%%BoundingBox: %i %i %i %i' % (
-                int(math.floor(bbox[0])),
-                int(math.floor(bbox[1])),
-                int(math.ceil(bbox[2])),
-                int(math.ceil(bbox[3])))
+            return ('%%%%BoundingBox: %i %i %i %i' % (
+                    int(math.floor(bbox[0])),
+                    int(math.floor(bbox[1])),
+                    int(math.ceil(bbox[2])),
+                    int(math.ceil(bbox[3])))).encode('ascii')
 
-    pat = re.compile(r'%%(HiRes)?BoundingBox:((\s+[0-9.]+){4})')
+    pat = re.compile(br'%%(HiRes)?BoundingBox:((\s+[0-9.]+){4})')
     if len(args) == 1:
         s = args[0]
         return pat.sub(repl, s)
@@ -299,18 +317,16 @@ _gmt_installations = {}
 # ... or let GmtPy autodetect GMT via $PATH and $GMTHOME
 
 
-def cmp_version(a, b):
-    ai = [int(x) for x in a.split('.')]
-    bi = [int(x) for x in b.split('.')]
-    return cmp(ai, bi)
+def key_version(a):
+    return tuple(int(x) for x in a.split('.'))
 
 
 def newest_installed_gmt_version():
-    return sorted(_gmt_installations.keys(), cmp=cmp_version)[-1]
+    return sorted(_gmt_installations.keys(), key=key_version)[-1]
 
 
 def all_installed_gmt_versions():
-    return sorted(_gmt_installations.keys(), cmp=cmp_version)
+    return sorted(_gmt_installations.keys(), key=key_version)
 
 
 # To have consistent defaults, they are hardcoded here and should not be
@@ -1122,15 +1138,15 @@ def get_gmt_version(gmtdefaultsbinary, gmthomedir=None):
         env=environ)
 
     (stdout, stderr) = p.communicate()
-    m = re.search(r'(\d+(\.\d+)*)', stderr) \
-        or re.search(r'# GMT (\d+(\.\d+)*)', stdout)
+    m = re.search(br'(\d+(\.\d+)*)', stderr) \
+        or re.search(br'# GMT (\d+(\.\d+)*)', stdout)
 
     if not m:
         raise GMTInstallationProblem(
             "Can't extract version number from output of %s"
             % gmtdefaultsbinary)
 
-    return m.group(1)
+    return str(m.group(1).decode('ascii'))
 
 
 def detect_gmt_installations():
@@ -1147,27 +1163,27 @@ def detect_gmt_installations():
 
         (stdout, stderr) = p.communicate()
 
-        m = re.search(r'Version\s+(\d+(\.\d+)*)', stderr, re.M)
+        m = re.search(br'Version\s+(\d+(\.\d+)*)', stderr, re.M)
         if not m:
             raise GMTInstallationProblem(
                 "Can't version number from output of GMT")
 
-        version = m.group(1)
+        version = str(m.group(1).decode('ascii'))
         if version[0] != '5':
 
-            m = re.search(r'^\s+executables\s+(.+)$', stderr, re.M)
+            m = re.search(br'^\s+executables\s+(.+)$', stderr, re.M)
             if not m:
                 raise GMTInstallationProblem(
                     "Can't extract executables dir from output of GMT")
 
-            gmtbin = m.group(1)
+            gmtbin = str(m.group(1).decode('ascii'))
 
-            m = re.search(r'^\s+shared data\s+(.+)$', stderr, re.M)
+            m = re.search(br'^\s+shared data\s+(.+)$', stderr, re.M)
             if not m:
                 raise GMTInstallationProblem(
                     "Can't extract shared dir from output of GMT")
 
-            gmtshare = m.group(1)
+            gmtshare = str(m.group(1).decode('ascii'))
             if not gmtshare.endswith('/share'):
                 raise GMTInstallationProblem(
                     "Can't determine GMTHOME from output of GMT")
@@ -1182,8 +1198,10 @@ def detect_gmt_installations():
         errmesses.append(('GMT', str(e)))
 
     try:
-        version = subprocess.check_output(['gmt', '--version']).strip()
-        gmtbin = subprocess.check_output(['gmt', '--show-bindir']).strip()
+        version = str(subprocess.check_output(
+            ['gmt', '--version']).strip().decode('ascii')).split('_')[0]
+        gmtbin = str(subprocess.check_output(
+            ['gmt', '--show-bindir']).strip().decode('ascii'))
         installations[version] = {
             'bin': gmtbin}
 
@@ -1202,13 +1220,12 @@ def detect_gmt_installations():
 
 def appropriate_defaults_version(version):
 
-    avails = sorted(_gmt_defaults_by_version.keys(), cmp=cmp_version)
+    avails = sorted(_gmt_defaults_by_version.keys(), key=key_version)
     for iavail, avail in enumerate(avails):
-        c = cmp_version(version, avail)
-        if c == 0:
+        if key_version(version) == key_version(avail):
             return version
 
-        elif c == -1:
+        elif key_version(version) < key_version(avail):
             return avails[max(0, iavail-1)]
 
     return avails[-1]
@@ -1241,15 +1258,15 @@ def diff_defaults(v1, v2):
     d2 = gmt_default_config(v2)
     for k in d1:
         if k not in d2:
-            print '%s not in %s' % (k, v2)
+            print('%s not in %s' % (k, v2))
         else:
             if d1[k] != d2[k]:
-                print '%s %s = %s' % (v1, k, d1[k])
-                print '%s %s = %s' % (v2, k, d2[k])
+                print('%s %s = %s' % (v1, k, d1[k]))
+                print('%s %s = %s' % (v2, k, d2[k]))
 
     for k in d2:
         if k not in d1:
-            print '%s not in %s' % (k, v1)
+            print('%s not in %s' % (k, v1))
 
 # diff_defaults('4.5.2', '4.5.3')
 
@@ -1301,7 +1318,7 @@ def setup_gmt_installations():
             _gmt_installations.update(detect_gmt_installations())
 
         # store defaults as dicts into the gmt installations dicts
-        for version, installation in _gmt_installations.iteritems():
+        for version, installation in _gmt_installations.items():
             installation['defaults'] = gmt_default_config(version)
             installation['version'] = version
 
@@ -1490,7 +1507,7 @@ def loadgrd(filename):
     from scipy.io import netcdf
 
     nc = netcdf.netcdf_file(filename, 'r')
-    vkeys = nc.variables.keys()
+    vkeys = list(nc.variables.keys())
     kx = 'x'
     ky = 'y'
     if 'lon' in vkeys:
@@ -1638,7 +1655,7 @@ def doublegrid(x, y, z):
     return x2, y2, z2
 
 
-class Guru:
+class Guru(object):
     '''Abstract base class providing template interpolation, accessible as
     attributes.
 
@@ -1712,7 +1729,7 @@ def nice_value(x):
     return sign * 0.1 * exp
 
 
-class AutoScaler:
+class AutoScaler(object):
     '''Tunable 1D autoscaling based on data range.
 
     Instances of this class may be used to determine nice minima, maxima and
@@ -2212,7 +2229,7 @@ class ScaleGuru(Guru):
         return params
 
 
-class GumSpring:
+class GumSpring(object):
 
     '''Sizing policy implementing a minimal size, plus a desire to grow.'''
 
@@ -3050,7 +3067,7 @@ def text_box(
 
     dx, dy = None, None
     for line in stderr.splitlines():
-        if line.startswith('%%HiResBoundingBox:'):
+        if line.startswith(b'%%HiResBoundingBox:'):
             l, b, r, t = [float(x) for x in line.split()[-4:]]
             dx, dy = r-l, t-b
             break
@@ -3058,24 +3075,27 @@ def text_box(
     return dx, dy
 
 
-class TableLiner:
+class TableLiner(object):
     '''Utility class to turn tables into lines.'''
 
-    def __init__(self, in_columns=None, in_rows=None):
+    def __init__(self, in_columns=None, in_rows=None, encoding='utf-8'):
         self.in_columns = in_columns
         self.in_rows = in_rows
+        self.encoding = encoding
 
     def __iter__(self):
         if self.in_columns is not None:
-            for row in izip(*self.in_columns):
-                yield ' '.join([str(x) for x in row])+'\n'
+            for row in zip(*self.in_columns):
+                yield (' '.join([newstr(x) for x in row])+'\n').encode(
+                    self.encoding)
 
         if self.in_rows is not None:
             for row in self.in_rows:
-                yield ' '.join([str(x) for x in row])+'\n'
+                yield (' '.join([newstr(x) for x in row])+'\n').encode(
+                    self.encoding)
 
 
-class LineStreamChopper:
+class LineStreamChopper(object):
     '''File-like object to buffer data.'''
 
     def __init__(self, liner):
@@ -3085,7 +3105,7 @@ class LineStreamChopper:
         self.closed = False
 
     def _chopiter(self):
-        buf = StringIO()
+        buf = BytesIO()
         for line in self.liner:
             buf.write(line)
             buflen = buf.tell()
@@ -3094,7 +3114,7 @@ class LineStreamChopper:
                 while buf.tell() <= buflen-self.chopsize:
                     yield buf.read(self.chopsize)
 
-                newbuf = StringIO()
+                newbuf = BytesIO()
                 newbuf.write(buf.read())
                 buf.close()
                 buf = newbuf
@@ -3111,7 +3131,7 @@ class LineStreamChopper:
 
         self.chopsize = size
         try:
-            return self.chop_iterator.next()
+            return next(self.chop_iterator)
         except StopIteration:
             return ''
 
@@ -3129,10 +3149,10 @@ font_tab = {
     1: 'Helvetica-Bold',
 }
 
-font_tab_rev = dict((v, k) for (k, v) in font_tab.iteritems())
+font_tab_rev = dict((v, k) for (k, v) in font_tab.items())
 
 
-class GMT:
+class GMT(object):
     '''A thin wrapper to GMT command execution.
 
     A dict ``config`` may be given to override some of the default GMT
@@ -3186,7 +3206,7 @@ class GMT:
             self.gmt_config.update(config)
 
         if config_papersize:
-            if not isinstance(config_papersize, basestring):
+            if not isinstance(config_papersize, str):
                 config_papersize = 'Custom_%ix%i' % (
                     int(config_papersize[0]), int(config_papersize[1]))
 
@@ -3203,7 +3223,7 @@ class GMT:
             self.load_unfinished(kontinue)
             self.needstart = False
         else:
-            self.output = StringIO()
+            self.output = BytesIO()
             self.needstart = True
 
         self.finished = False
@@ -3250,11 +3270,13 @@ class GMT:
             return self.gmt_config['LABEL_FONT']
 
     def gen_gmt_config_file(self, config_filename, config):
-        f = open(config_filename, 'w')
-        f.write('#\n# GMT %s Defaults file\n' % self.installation['version'])
+        f = open(config_filename, 'wb')
+        f.write(
+            ('#\n# GMT %s Defaults file\n'
+             % self.installation['version']).encode('ascii'))
 
-        for k, v in config.iteritems():
-            f.write('%s = %s\n' % (k, v))
+        for k, v in config.items():
+            f.write(('%s = %s\n' % (k, v)).encode('ascii'))
         f.close()
 
     def __del__(self):
@@ -3291,6 +3313,9 @@ class GMT:
         assert(1 >= len([x for x in [out_stream, out_filename, out_discard]
                          if x is not None]))
 
+        options = []
+
+        gmt_config = self.gmt_config
         gmt_config_filename = self.gmt_config_filename
         if config_override:
             gmt_config = self.gmt_config.copy()
@@ -3300,25 +3325,30 @@ class GMT:
             self.gen_gmt_config_file(gmt_config_override_filename, gmt_config)
             gmt_config_filename = gmt_config_override_filename
 
-        options = []
-
         if out_discard:
             out_filename = '/dev/null'
 
         out_mustclose = False
         if out_filename is not None:
             out_mustclose = True
-            out_stream = open(out_filename, 'w')
+            out_stream = open(out_filename, 'wb')
 
         if in_filename is not None:
-            in_stream = open(in_filename, 'r')
+            in_stream = open(in_filename, 'rb')
 
         if in_string is not None:
-            in_stream = StringIO(in_string)
+            in_stream = BytesIO(in_string)
+
+        encoding_gmt = gmt_config.get(
+            'PS_CHAR_ENCODING',
+            gmt_config.get('CHAR_ENCODING', 'ISOLatin1+'))
+
+        encoding = encoding_gmt_to_python[encoding_gmt.lower()]
 
         if in_columns is not None or in_rows is not None:
             in_stream = LineStreamChopper(TableLiner(in_columns=in_columns,
-                                                     in_rows=in_rows))
+                                                     in_rows=in_rows,
+                                                     encoding=encoding))
 
         # convert option arguments to strings
         for k, v in kwargs.items():
@@ -3494,18 +3524,18 @@ class GMT:
         '''Create and open a file in the private temp directory.'''
 
         fn = self.tempfilename(name)
-        f = open(fn, 'w')
+        f = open(fn, 'wb')
         return f, fn
 
     def save_unfinished(self, filename):
-        out = open(filename, 'w')
+        out = open(filename, 'wb')
         out.write(self.output.getvalue())
         out.close()
 
     def load_unfinished(self, filename):
-        self.output = StringIO()
+        self.output = BytesIO()
         self.finished = False
-        inp = open(filename, 'r')
+        inp = open(filename, 'rb')
         self.output.write(inp.read())
         inp.close()
 
@@ -3543,7 +3573,7 @@ class GMT:
 
         if filename:
             tempfn = pjoin(self.tempdir, 'incomplete')
-            out = open(tempfn, 'w')
+            out = open(tempfn, 'wb')
         else:
             out = sys.stdout
 
@@ -3774,7 +3804,7 @@ def simpleconf_to_ax(conf, axname):
     return Ax(**c)
 
 
-class DensityPlotDef:
+class DensityPlotDef(object):
     def __init__(self, data, cpt='ocean', tension=0.7, size=(640, 480),
                  contour=False, method='surface', zscaler=None, **extra):
         self.data = data
@@ -3787,7 +3817,7 @@ class DensityPlotDef:
         self.extra = extra
 
 
-class TextDef:
+class TextDef(object):
     def __init__(
             self,
             data,
@@ -3805,7 +3835,7 @@ class TextDef:
         self.color = color
 
 
-class Simple:
+class Simple(object):
     def __init__(self, gmtconfig=None, gmtversion='newest', **simple_config):
         self.data = []
         self.symbols = []

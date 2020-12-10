@@ -3297,14 +3297,24 @@ class GMT:
         assert(1 >= len([x for x in [out_stream, out_filename, out_discard]
                          if x is not None]))
 
-        gmt_config_filename = self.gmt_config_filename
-        if config_override:
-            gmt_config = self.gmt_config.copy()
-            gmt_config.update(config_override)
-            gmt_config_override_filename = pjoin(
-                self.tempdir, 'gmtdefaults_override')
-            self.gen_gmt_config_file(gmt_config_override_filename, gmt_config)
-            gmt_config_filename = gmt_config_override_filename
+        options = []
+
+        gmt_config = self.gmt_config
+        if not self.is_gmt5():
+            gmt_config_filename = self.gmt_config_filename
+            if config_override:
+                gmt_config = self.gmt_config.copy()
+                gmt_config.update(config_override)
+                gmt_config_override_filename = pjoin(
+                    self.tempdir, 'gmtdefaults_override')
+                self.gen_gmt_config_file(
+                    gmt_config_override_filename, gmt_config)
+                gmt_config_filename = gmt_config_override_filename
+
+        else:  # gmt5 needs override variables as --VAR=value
+            if config_override:
+                for k, v in config_override.items():
+                    options.append('--%s=%s' % (k, v))
 
         options = []
 
@@ -3365,7 +3375,7 @@ class GMT:
             raise OSError('No such file: %s' % args[0])
         args.extend(options)
         args.extend(addargs)
-        if not suppressdefaults and not self.is_gmt5():
+        if not self.is_gmt5() and not suppressdefaults:
             # does not seem to work with GMT 5 (and should not be necessary
             args.append('+'+gmt_config_filename)
 
@@ -4195,15 +4205,17 @@ def nice_palette(gmt, widget, scaleguru, cptfile, zlabeloffset=0.8*inch,
         ticklen = negpalwid
     else:
         ticklen = '0p'
+
+    TICK_LENGTH_PARAM = 'MAP_TICK_LENGTH' if gmt.is_gmt5() else 'TICK_LENGTH'
     gmt.psbasemap(
         R=pal_ax_r, B='4::/%(zinc)g::nsw' % par_ax,
-        config={'TICK_LENGTH': ticklen},
+        config={TICK_LENGTH_PARAM: ticklen},
         *widget.JXY())
 
     if innerticks:
         gmt.psbasemap(
             R=pal_ax_r, B='4::/%(zinc)g::E' % par_ax,
-            config={'TICK_LENGTH': '0p'},
+            config={TICK_LENGTH_PARAM: '0p'},
             *widget.JXY())
     else:
         gmt.psbasemap(R=pal_ax_r, B='4::/%(zinc)g::E' % par_ax, *widget.JXY())

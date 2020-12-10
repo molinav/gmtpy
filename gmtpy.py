@@ -4014,6 +4014,7 @@ class Simple:
                         G=fn_grid,
                         I='%i+/%i+' % dpd.size,  # noqa
                         out_discard=True,
+                        V=True,
                         *R)
 
                 if gmt.is_gmt5():

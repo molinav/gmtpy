@@ -294,11 +294,11 @@ _gmt_installations = {}
 # (use this, if you want to use different GMT versions simultaneously.)
 
 # _gmt_installations['4.2.1'] = {'home': '/sw/etch-ia32/gmt-4.2.1',
-#                               'bin':  '/sw/etch-ia32/gmt-4.2.1/bin'}
+#                                'bin':  '/sw/etch-ia32/gmt-4.2.1/bin'}
 # _gmt_installations['4.3.0'] = {'home': '/sw/etch-ia32/gmt-4.3.0',
-#                               'bin':  '/sw/etch-ia32/gmt-4.3.0/bin'}
+#                                'bin':  '/sw/etch-ia32/gmt-4.3.0/bin'}
 # _gmt_installations['4.3.1'] = {'home': '/sw/share/gmt',
-#                               'bin':  '/sw/bin'}
+#                                'bin':  '/sw/bin'}
 
 # ... or let GmtPy autodetect GMT via $PATH and $GMTHOME
 
@@ -1313,6 +1313,7 @@ def setup_gmt_installations():
             check_gmt_installation(installation)
 
         setup_gmt_installations.have_done = True
+
 
 setup_gmt_installations.have_done = False
 
@@ -2784,6 +2785,7 @@ class FrameLayout(Widget):
                                    (gl[0], gr[0], gc[0]), ah)
         stv, sbv, scv = distribute((st[1], sb[1], sc[1]),
                                    (gt[1], gb[1], gc[1]), av)
+
         if self.center.aspect is not None:
             ahm = sh - (sl[0]+sr[0] + scv/self.center.aspect)
             avm = sv - (st[1]+sb[1] + sch*self.center.aspect)
@@ -3962,14 +3964,16 @@ class Simple:
             fn_mean = gmt.tempfilename()
 
             if dpd.method in ('surface', 'triangulate'):
-                gmt.blockmean(in_columns=dpd.data, I='%i+/%i+' % dpd.size,
-                              out_filename=fn_mean,  *R)
+                gmt.blockmean(in_columns=dpd.data,
+                              I='%i+/%i+' % dpd.size,  # noqa
+                              out_filename=fn_mean, *R)
 
                 if dpd.method == 'surface':
                     gmt.surface(
                         in_filename=fn_mean,
                         T=dpd.tension,
-                        G=fn_grid, I='%i+/%i+' % dpd.size,
+                        G=fn_grid,
+                        I='%i+/%i+' % dpd.size,  # noqa
                         out_discard=True,
                         *R)
 
@@ -3977,7 +3981,7 @@ class Simple:
                     gmt.triangulate(
                         in_filename=fn_mean,
                         G=fn_grid,
-                        I='%i+/%i+' % dpd.size,
+                        I='%i+/%i+' % dpd.size,  # noqa
                         out_discard=True,
                         *R)
 
@@ -3997,7 +4001,8 @@ class Simple:
             if dpd.method == 'fillcontour':
                 extra = dict(C=fn_cpt)
                 extra.update(dpd.extra)
-                gmt.pscontour(in_columns=dpd.data, I=True, *rxyj, **extra)
+                gmt.pscontour(in_columns=dpd.data,
+                              I=True, *rxyj, **extra)  # noqa
 
             if dpd.method == 'contour':
                 extra = dict(W='0.5p,black', C=fn_cpt)
@@ -4176,7 +4181,8 @@ def nice_palette(gmt, widget, scaleguru, cptfile, zlabeloffset=0.8*inch,
     pal_r = (0, 1, par['zmin'], par['zmax'])
     pal_ax_r = (0, 1, par_ax['zmin'], par_ax['zmax'])
     gmt.xyz2grd(
-        G=palgrdfile, R=pal_r, I=(1, pdz), in_columns=(px, pz, pz),
+        G=palgrdfile, R=pal_r,
+        I=(1, pdz), in_columns=(px, pz, pz),  # noqa
         out_discard=True)
 
     gmt.grdimage(palgrdfile, R=pal_r, C=cptfile, *widget.JXY())

@@ -1638,7 +1638,7 @@ def doublegrid(x, y, z):
     return x2, y2, z2
 
 
-class Guru:
+class Guru(object):
     '''Abstract base class providing template interpolation, accessible as
     attributes.
 
@@ -1712,7 +1712,7 @@ def nice_value(x):
     return sign * 0.1 * exp
 
 
-class AutoScaler:
+class AutoScaler(object):
     '''Tunable 1D autoscaling based on data range.
 
     Instances of this class may be used to determine nice minima, maxima and
@@ -2212,7 +2212,7 @@ class ScaleGuru(Guru):
         return params
 
 
-class GumSpring:
+class GumSpring(object):
 
     '''Sizing policy implementing a minimal size, plus a desire to grow.'''
 
@@ -3058,7 +3058,7 @@ def text_box(
     return dx, dy
 
 
-class TableLiner:
+class TableLiner(object):
     '''Utility class to turn tables into lines.'''
 
     def __init__(self, in_columns=None, in_rows=None):
@@ -3075,7 +3075,7 @@ class TableLiner:
                 yield ' '.join([str(x) for x in row])+'\n'
 
 
-class LineStreamChopper:
+class LineStreamChopper(object):
     '''File-like object to buffer data.'''
 
     def __init__(self, liner):
@@ -3132,7 +3132,7 @@ font_tab = {
 font_tab_rev = dict((v, k) for (k, v) in font_tab.items())
 
 
-class GMT:
+class GMT(object):
     '''A thin wrapper to GMT command execution.
 
     A dict ``config`` may be given to override some of the default GMT
@@ -3774,7 +3774,7 @@ def simpleconf_to_ax(conf, axname):
     return Ax(**c)
 
 
-class DensityPlotDef:
+class DensityPlotDef(object):
     def __init__(self, data, cpt='ocean', tension=0.7, size=(640, 480),
                  contour=False, method='surface', zscaler=None, **extra):
         self.data = data
@@ -3787,7 +3787,7 @@ class DensityPlotDef:
         self.extra = extra
 
 
-class TextDef:
+class TextDef(object):
     def __init__(
             self,
             data,
@@ -3805,7 +3805,7 @@ class TextDef:
         self.color = color
 
 
-class Simple:
+class Simple(object):
     def __init__(self, gmtconfig=None, gmtversion='newest', **simple_config):
         self.data = []
         self.symbols = []

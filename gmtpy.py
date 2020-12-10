@@ -21,7 +21,6 @@ import re
 import os
 import sys
 import shutil
-from itertools import izip
 from os.path import join as pjoin
 import tempfile
 import random
@@ -3068,7 +3067,7 @@ class TableLiner:
 
     def __iter__(self):
         if self.in_columns is not None:
-            for row in izip(*self.in_columns):
+            for row in zip(*self.in_columns):
                 yield ' '.join([str(x) for x in row])+'\n'
 
         if self.in_rows is not None:

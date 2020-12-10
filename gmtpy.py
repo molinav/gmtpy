@@ -16,7 +16,10 @@
 
 from __future__ import print_function
 import subprocess
-from cStringIO import StringIO
+try:
+    from StringIO import StringIO as BytesIO
+except ImportError:
+    from io import BytesIO
 import re
 import os
 import sys
@@ -30,8 +33,23 @@ import numpy as num
 import copy
 from select import select
 
-find_bb = re.compile(r'%%BoundingBox:((\s+[-0-9]+){4})')
-find_hiresbb = re.compile(r'%%HiResBoundingBox:((\s+[-0-9.]+){4})')
+try:
+    newstr = unicode
+except NameError:
+    newstr = str
+
+find_bb = re.compile(br'%%BoundingBox:((\s+[-0-9]+){4})')
+find_hiresbb = re.compile(br'%%HiResBoundingBox:((\s+[-0-9.]+){4})')
+
+
+encoding_gmt_to_python = {
+    'isolatin1+': 'iso-8859-1',
+    'standard+': 'ascii',
+    'isolatin1': 'iso-8859-1',
+    'standard': 'ascii'}
+
+for i in range(1, 11):
+    encoding_gmt_to_python['iso-8859-%i' % i] = 'iso-8859-%i' % i
 
 
 def have_gmt():
@@ -145,16 +163,16 @@ def replace_bbox(bbox, *args):
 
     def repl(m):
         if m.group(1):
-            return '%%HiResBoundingBox: ' + ' '.join(
-                '%.3f' % float(x) for x in bbox)
+            return ('%%HiResBoundingBox: ' + ' '.join(
+                '%.3f' % float(x) for x in bbox)).encode('ascii')
         else:
-            return '%%%%BoundingBox: %i %i %i %i' % (
-                int(math.floor(bbox[0])),
-                int(math.floor(bbox[1])),
-                int(math.ceil(bbox[2])),
-                int(math.ceil(bbox[3])))
+            return ('%%%%BoundingBox: %i %i %i %i' % (
+                    int(math.floor(bbox[0])),
+                    int(math.floor(bbox[1])),
+                    int(math.ceil(bbox[2])),
+                    int(math.ceil(bbox[3])))).encode('ascii')
 
-    pat = re.compile(r'%%(HiRes)?BoundingBox:((\s+[0-9.]+){4})')
+    pat = re.compile(br'%%(HiRes)?BoundingBox:((\s+[0-9.]+){4})')
     if len(args) == 1:
         s = args[0]
         return pat.sub(repl, s)
@@ -1120,15 +1138,15 @@ def get_gmt_version(gmtdefaultsbinary, gmthomedir=None):
         env=environ)
 
     (stdout, stderr) = p.communicate()
-    m = re.search(r'(\d+(\.\d+)*)', stderr) \
-        or re.search(r'# GMT (\d+(\.\d+)*)', stdout)
+    m = re.search(br'(\d+(\.\d+)*)', stderr) \
+        or re.search(br'# GMT (\d+(\.\d+)*)', stdout)
 
     if not m:
         raise GMTInstallationProblem(
             "Can't extract version number from output of %s"
             % gmtdefaultsbinary)
 
-    return m.group(1)
+    return str(m.group(1).decode('ascii'))
 
 
 def detect_gmt_installations():
@@ -1145,27 +1163,27 @@ def detect_gmt_installations():
 
         (stdout, stderr) = p.communicate()
 
-        m = re.search(r'Version\s+(\d+(\.\d+)*)', stderr, re.M)
+        m = re.search(br'Version\s+(\d+(\.\d+)*)', stderr, re.M)
         if not m:
             raise GMTInstallationProblem(
                 "Can't version number from output of GMT")
 
-        version = m.group(1)
+        version = str(m.group(1).decode('ascii'))
         if version[0] != '5':
 
-            m = re.search(r'^\s+executables\s+(.+)$', stderr, re.M)
+            m = re.search(br'^\s+executables\s+(.+)$', stderr, re.M)
             if not m:
                 raise GMTInstallationProblem(
                     "Can't extract executables dir from output of GMT")
 
-            gmtbin = m.group(1)
+            gmtbin = str(m.group(1).decode('ascii'))
 
-            m = re.search(r'^\s+shared data\s+(.+)$', stderr, re.M)
+            m = re.search(br'^\s+shared data\s+(.+)$', stderr, re.M)
             if not m:
                 raise GMTInstallationProblem(
                     "Can't extract shared dir from output of GMT")
 
-            gmtshare = m.group(1)
+            gmtshare = str(m.group(1).decode('ascii'))
             if not gmtshare.endswith('/share'):
                 raise GMTInstallationProblem(
                     "Can't determine GMTHOME from output of GMT")
@@ -1180,8 +1198,10 @@ def detect_gmt_installations():
         errmesses.append(('GMT', str(e)))
 
     try:
-        version = subprocess.check_output(['gmt', '--version']).strip()
-        gmtbin = subprocess.check_output(['gmt', '--show-bindir']).strip()
+        version = str(subprocess.check_output(
+            ['gmt', '--version']).strip().decode('ascii')).split('_')[0]
+        gmtbin = str(subprocess.check_output(
+            ['gmt', '--show-bindir']).strip().decode('ascii'))
         installations[version] = {
             'bin': gmtbin}
 
@@ -3047,7 +3067,7 @@ def text_box(
 
     dx, dy = None, None
     for line in stderr.splitlines():
-        if line.startswith('%%HiResBoundingBox:'):
+        if line.startswith(b'%%HiResBoundingBox:'):
             l, b, r, t = [float(x) for x in line.split()[-4:]]
             dx, dy = r-l, t-b
             break
@@ -3058,18 +3078,21 @@ def text_box(
 class TableLiner(object):
     '''Utility class to turn tables into lines.'''
 
-    def __init__(self, in_columns=None, in_rows=None):
+    def __init__(self, in_columns=None, in_rows=None, encoding='utf-8'):
         self.in_columns = in_columns
         self.in_rows = in_rows
+        self.encoding = encoding
 
     def __iter__(self):
         if self.in_columns is not None:
             for row in zip(*self.in_columns):
-                yield ' '.join([str(x) for x in row])+'\n'
+                yield (' '.join([newstr(x) for x in row])+'\n').encode(
+                    self.encoding)
 
         if self.in_rows is not None:
             for row in self.in_rows:
-                yield ' '.join([str(x) for x in row])+'\n'
+                yield (' '.join([newstr(x) for x in row])+'\n').encode(
+                    self.encoding)
 
 
 class LineStreamChopper(object):
@@ -3082,7 +3105,7 @@ class LineStreamChopper(object):
         self.closed = False
 
     def _chopiter(self):
-        buf = StringIO()
+        buf = BytesIO()
         for line in self.liner:
             buf.write(line)
             buflen = buf.tell()
@@ -3091,7 +3114,7 @@ class LineStreamChopper(object):
                 while buf.tell() <= buflen-self.chopsize:
                     yield buf.read(self.chopsize)
 
-                newbuf = StringIO()
+                newbuf = BytesIO()
                 newbuf.write(buf.read())
                 buf.close()
                 buf = newbuf
@@ -3183,7 +3206,7 @@ class GMT(object):
             self.gmt_config.update(config)
 
         if config_papersize:
-            if not isinstance(config_papersize, basestring):
+            if not isinstance(config_papersize, str):
                 config_papersize = 'Custom_%ix%i' % (
                     int(config_papersize[0]), int(config_papersize[1]))
 
@@ -3200,7 +3223,7 @@ class GMT(object):
             self.load_unfinished(kontinue)
             self.needstart = False
         else:
-            self.output = StringIO()
+            self.output = BytesIO()
             self.needstart = True
 
         self.finished = False
@@ -3247,11 +3270,13 @@ class GMT(object):
             return self.gmt_config['LABEL_FONT']
 
     def gen_gmt_config_file(self, config_filename, config):
-        f = open(config_filename, 'w')
-        f.write('#\n# GMT %s Defaults file\n' % self.installation['version'])
+        f = open(config_filename, 'wb')
+        f.write(
+            ('#\n# GMT %s Defaults file\n'
+             % self.installation['version']).encode('ascii'))
 
         for k, v in config.items():
-            f.write('%s = %s\n' % (k, v))
+            f.write(('%s = %s\n' % (k, v)).encode('ascii'))
         f.close()
 
     def __del__(self):
@@ -3288,6 +3313,9 @@ class GMT(object):
         assert(1 >= len([x for x in [out_stream, out_filename, out_discard]
                          if x is not None]))
 
+        options = []
+
+        gmt_config = self.gmt_config
         gmt_config_filename = self.gmt_config_filename
         if config_override:
             gmt_config = self.gmt_config.copy()
@@ -3297,25 +3325,30 @@ class GMT(object):
             self.gen_gmt_config_file(gmt_config_override_filename, gmt_config)
             gmt_config_filename = gmt_config_override_filename
 
-        options = []
-
         if out_discard:
             out_filename = '/dev/null'
 
         out_mustclose = False
         if out_filename is not None:
             out_mustclose = True
-            out_stream = open(out_filename, 'w')
+            out_stream = open(out_filename, 'wb')
 
         if in_filename is not None:
-            in_stream = open(in_filename, 'r')
+            in_stream = open(in_filename, 'rb')
 
         if in_string is not None:
-            in_stream = StringIO(in_string)
+            in_stream = BytesIO(in_string)
+
+        encoding_gmt = gmt_config.get(
+            'PS_CHAR_ENCODING',
+            gmt_config.get('CHAR_ENCODING', 'ISOLatin1+'))
+
+        encoding = encoding_gmt_to_python[encoding_gmt.lower()]
 
         if in_columns is not None or in_rows is not None:
             in_stream = LineStreamChopper(TableLiner(in_columns=in_columns,
-                                                     in_rows=in_rows))
+                                                     in_rows=in_rows,
+                                                     encoding=encoding))
 
         # convert option arguments to strings
         for k, v in kwargs.items():
@@ -3491,18 +3524,18 @@ class GMT(object):
         '''Create and open a file in the private temp directory.'''
 
         fn = self.tempfilename(name)
-        f = open(fn, 'w')
+        f = open(fn, 'wb')
         return f, fn
 
     def save_unfinished(self, filename):
-        out = open(filename, 'w')
+        out = open(filename, 'wb')
         out.write(self.output.getvalue())
         out.close()
 
     def load_unfinished(self, filename):
-        self.output = StringIO()
+        self.output = BytesIO()
         self.finished = False
-        inp = open(filename, 'r')
+        inp = open(filename, 'rb')
         self.output.write(inp.read())
         inp.close()
 
@@ -3540,7 +3573,7 @@ class GMT(object):
 
         if filename:
             tempfn = pjoin(self.tempdir, 'incomplete')
-            out = open(tempfn, 'w')
+            out = open(tempfn, 'wb')
         else:
             out = sys.stdout
 

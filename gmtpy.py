@@ -1814,7 +1814,7 @@ class AutoScaler:
 
         Returns ``(minimum, maximum, increment)`` or ``(maximum, minimum,
         -increment)``, depending on whether data_range is ``(data_min,
-        data_max)`` or ``(data_max, data_min)``. If `override_mode` is
+        data_max)`` or ``(data_max, data_min)``. If ``override_mode`` is
         defined, the mode attribute is temporarily overridden by the given
         value. '''
 
@@ -2177,8 +2177,8 @@ class ScaleGuru(Guru):
 
         Normally, values corresponding to the scaling of the raw data are
         produced, but if ``ax_projection`` is ``True``, values which are
-        suitable to be printed on the axes are returned. This means that in
-        the latter case, the :py:attr:`Ax.scaled_unit` and
+        suitable to be printed on the axes are returned. This means that in the
+        latter case, the :py:attr:`Ax.scaled_unit` and
         :py:attr:`Ax.scaled_unit_factor` attributes as set on the axes are
         respected and that a common 10^x factor is factored out and put to the
         label string. '''
@@ -2395,7 +2395,7 @@ class Widget(Guru):
 
         Given a box as ``size`` and ``offset``, return ``new_size`` and
         ``new_offset``, such that the widget's sizing and aspect constraints
-        are fullfilled.  The returned box is centered on the given input box.
+        are fullfilled. The returned box is centered on the given input box.
         '''
 
         sh, sv = size
@@ -3415,8 +3415,7 @@ class GMT:
         self.command_log.append(args)
 
     def __getattr__(self, command):
-
-        '''Maps to call self._gmtcommand(command, \*addargs, \*\*kwargs).
+        '''Maps to call self._gmtcommand(command, \\*addargs, \\*\\*kwargs).
 
         Execute arbitrary GMT command.
 
@@ -3439,7 +3438,7 @@ class GMT:
         not interested in the output.
 
         The standard input of the GMT process is fed by data selected with one
-        of the following `in_*` keyword arguments:
+        of the following ``in_*`` keyword arguments:
 
         =============== =======================================================
         ``in_stream``   Data is read from an open file like object.
@@ -3485,8 +3484,8 @@ class GMT:
     def tempfilename(self, name=None):
         '''Get filename for temporary file in the private temp directory.
 
-           If no ``name`` argument is given, a random name is picked. If `name`
-           is given, returns a path ending in that ``name``.'''
+           If no ``name`` argument is given, a random name is picked. If
+           ``name`` is given, returns a path ending in that ``name``.'''
 
         if not name:
             name = ''.join(

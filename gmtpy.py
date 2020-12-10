@@ -29,6 +29,7 @@ import math
 import numpy as num
 import copy
 from select import select
+from scipy.io import netcdf
 
 find_bb = re.compile(r'%%BoundingBox:((\s+[-0-9]+){4})')
 find_hiresbb = re.compile(r'%%HiResBoundingBox:((\s+[-0-9.]+){4})')
@@ -1438,8 +1439,6 @@ def gmtdefaults_as_text(version='newest'):
 def savegrd(x, y, z, filename, title=None, naming='xy'):
     '''Write COARDS compliant netcdf (grd) file.'''
 
-    from scipy.io import netcdf
-
     assert y.size, x.size == z.shape
     ny, nx = z.shape
     nc = netcdf.netcdf_file(filename, 'w')
@@ -1491,8 +1490,6 @@ def to_array(var):
 
 def loadgrd(filename):
     '''Read COARDS compliant netcdf (grd) file.'''
-
-    from scipy.io import netcdf
 
     nc = netcdf.netcdf_file(filename, 'r')
     vkeys = nc.variables.keys()
@@ -3203,6 +3200,7 @@ class GMT:
         self.installation = get_gmt_installation(version)
         self.gmt_config = dict(self.installation['defaults'])
         self.eps_mode = eps_mode
+        self._shutil = shutil
 
         if config:
             self.gmt_config.update(config)
@@ -3280,9 +3278,8 @@ class GMT:
         f.close()
 
     def __del__(self):
-        import shutil
         if not self.keep_temp_dir:
-            shutil.rmtree(self.tempdir)
+            self._shutil.rmtree(self.tempdir)
 
     def _gmtcommand(self, command, *addargs, **kwargs):
 

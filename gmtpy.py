@@ -1301,7 +1301,7 @@ def setup_gmt_installations():
             _gmt_installations.update(detect_gmt_installations())
 
         # store defaults as dicts into the gmt installations dicts
-        for version, installation in _gmt_installations.iteritems():
+        for version, installation in _gmt_installations.items():
             installation['defaults'] = gmt_default_config(version)
             installation['version'] = version
 
@@ -3129,7 +3129,7 @@ font_tab = {
     1: 'Helvetica-Bold',
 }
 
-font_tab_rev = dict((v, k) for (k, v) in font_tab.iteritems())
+font_tab_rev = dict((v, k) for (k, v) in font_tab.items())
 
 
 class GMT:
@@ -3253,7 +3253,7 @@ class GMT:
         f = open(config_filename, 'w')
         f.write('#\n# GMT %s Defaults file\n' % self.installation['version'])
 
-        for k, v in config.iteritems():
+        for k, v in config.items():
             f.write('%s = %s\n' % (k, v))
         f.close()
 

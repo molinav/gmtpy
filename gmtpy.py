@@ -3108,7 +3108,7 @@ class LineStreamChopper(object):
 
         self.chopsize = size
         try:
-            return self.chop_iterator.next()
+            return next(self.chop_iterator)
         except StopIteration:
             return ''
 

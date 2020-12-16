@@ -80,6 +80,10 @@ class GmtPyError(Exception):
     pass
 
 
+class GMTError(GmtPyError):
+    pass
+
+
 class GMTInstallationProblem(GmtPyError):
     pass
 
@@ -122,7 +126,7 @@ def convert_graph(in_filename, out_filename, resolution=75., oversample=2.,
                     tmp_filename,
                     '-resize', '%i%%' % int(round(100.0/oversample)),
                     out_filename])
-            except:
+            except OSError as e:
                 raise GmtPyError(
                     'Cannot start `convert`, is it installed? (%s)' % str(e))
 
@@ -133,12 +137,12 @@ def convert_graph(in_filename, out_filename, resolution=75., oversample=2.,
                 try:
                     subprocess.check_call(
                         ['convert', tmp_filename, out_filename])
-                except:
+                except Exception as e:
                     raise GmtPyError(
                         'Cannot start `convert`, is it installed? (%s)'
                         % str(e))
 
-    except:
+    except Exception:
         raise
 
     finally:
@@ -156,7 +160,7 @@ def get_bbox(s):
             bb = [float(x) for x in m.group(1).split()]
             return bb
 
-    raise Exception('Cannot find bbox')
+    raise GmtPyError('Cannot find bbox')
 
 
 def replace_bbox(bbox, *args):
@@ -308,11 +312,11 @@ _gmt_installations = {}
 # (use this, if you want to use different GMT versions simultaneously.)
 
 # _gmt_installations['4.2.1'] = {'home': '/sw/etch-ia32/gmt-4.2.1',
-#                               'bin':  '/sw/etch-ia32/gmt-4.2.1/bin'}
+#                                'bin':  '/sw/etch-ia32/gmt-4.2.1/bin'}
 # _gmt_installations['4.3.0'] = {'home': '/sw/etch-ia32/gmt-4.3.0',
-#                               'bin':  '/sw/etch-ia32/gmt-4.3.0/bin'}
+#                                'bin':  '/sw/etch-ia32/gmt-4.3.0/bin'}
 # _gmt_installations['4.3.1'] = {'home': '/sw/share/gmt',
-#                               'bin':  '/sw/bin'}
+#                                'bin':  '/sw/bin'}
 
 # ... or let GmtPy autodetect GMT via $PATH and $GMTHOME
 
@@ -1160,7 +1164,7 @@ def gmt_default_config(version):
     xversion = appropriate_defaults_version(version)
 
     # if not version in _gmt_defaults_by_version:
-    #     raise Exception('No GMT defaults for version %s found' % version)
+    #     raise GMTError('No GMT defaults for version %s found' % version)
 
     gmt_defaults = _gmt_defaults_by_version[xversion]
 
@@ -1249,6 +1253,7 @@ def setup_gmt_installations():
             check_gmt_installation(installation)
 
         setup_gmt_installations.have_done = True
+
 
 setup_gmt_installations.have_done = False
 
@@ -1587,6 +1592,9 @@ class Guru(object):
     ``"%(key)x"``-substitutions. The deriving class must also provide a dict
     with the templates.'''
 
+    def __init__(self):
+        self.templates = {}
+
     def fill(self, templates, **kwargs):
         params = self.get_params(**kwargs)
         strings = [t % params for t in templates]
@@ -1749,7 +1757,7 @@ class AutoScaler(object):
 
         Returns ``(minimum, maximum, increment)`` or ``(maximum, minimum,
         -increment)``, depending on whether data_range is ``(data_min,
-        data_max)`` or ``(data_max, data_min)``. If `override_mode` is
+        data_max)`` or ``(data_max, data_min)``. If ``override_mode`` is
         defined, the mode attribute is temporarily overridden by the given
         value. '''
 
@@ -1999,7 +2007,15 @@ class ScaleGuru(Guru):
     '''
 
     def __init__(self, data_tuples=None, axes=None, aspect=None,
-                 percent_interval=None):
+                 percent_interval=None, copy_from=None):
+
+        Guru.__init__(self)
+
+        if copy_from:
+            self.templates = copy.deepcopy(copy_from.templates)
+            self.axes = copy.deepcopy(copy_from.axes)
+            self.data_ranges = copy.deepcopy(copy_from.data_ranges)
+            self.aspect = copy_from.aspect
 
         if percent_interval is not None:
             from scipy.stats import scoreatpercentile as scap
@@ -2101,6 +2117,9 @@ class ScaleGuru(Guru):
         self.data_ranges = data_ranges
         self.aspect = aspect
 
+    def copy(self):
+        return ScaleGuru(copy_from=self)
+
     def get_params(self, ax_projection=False):
 
         '''Get dict with output parameters.
@@ -2112,8 +2131,8 @@ class ScaleGuru(Guru):
 
         Normally, values corresponding to the scaling of the raw data are
         produced, but if ``ax_projection`` is ``True``, values which are
-        suitable to be printed on the axes are returned. This means that in
-        the latter case, the :py:attr:`Ax.scaled_unit` and
+        suitable to be printed on the axes are returned. This means that in the
+        latter case, the :py:attr:`Ax.scaled_unit` and
         :py:attr:`Ax.scaled_unit_factor` attributes as set on the axes are
         respected and that a common 10^x factor is factored out and put to the
         label string. '''
@@ -2225,6 +2244,8 @@ class Widget(Guru):
 
         '''Create new widget.'''
 
+        Guru.__init__(self)
+
         self.templates = dict(
             X='-Xa%(xoffset)gp',
             Y='-Ya%(yoffset)gp',
@@ -2330,7 +2351,7 @@ class Widget(Guru):
 
         Given a box as ``size`` and ``offset``, return ``new_size`` and
         ``new_offset``, such that the widget's sizing and aspect constraints
-        are fullfilled.  The returned box is centered on the given input box.
+        are fullfilled. The returned box is centered on the given input box.
         '''
 
         sh, sv = size
@@ -2708,18 +2729,19 @@ class FrameLayout(Widget):
         av = sv - (st[1]+sb[1]+sc[1])
 
         if ah < 0.0:
-            raise Exception("Container not wide enough for contents "
-                            "(FrameLayout, available: %g cm, needed: %g cm)"
-                            % (sh/cm, (sl[0]+sr[0]+sc[0])/cm))
+            raise GmtPyError("Container not wide enough for contents "
+                             "(FrameLayout, available: %g cm, needed: %g cm)"
+                             % (sh/cm, (sl[0]+sr[0]+sc[0])/cm))
         if av < 0.0:
-            raise Exception("Container not high enough for contents "
-                            "(FrameLayout, available: %g cm, needed: %g cm)"
-                            % (sv/cm, (st[1]+sb[1]+sc[1])/cm))
+            raise GmtPyError("Container not high enough for contents "
+                             "(FrameLayout, available: %g cm, needed: %g cm)"
+                             % (sv/cm, (st[1]+sb[1]+sc[1])/cm))
 
         slh, srh, sch = distribute((sl[0], sr[0], sc[0]),
                                    (gl[0], gr[0], gc[0]), ah)
         stv, sbv, scv = distribute((st[1], sb[1], sc[1]),
                                    (gt[1], gb[1], gc[1]), av)
+
         if self.center.aspect is not None:
             ahm = sh - (sl[0]+sr[0] + scv/self.center.aspect)
             avm = sv - (st[1]+sb[1] + sch*self.center.aspect)
@@ -2761,7 +2783,7 @@ class FrameLayout(Widget):
         if which in ('left', 'right', 'top', 'bottom', 'center'):
             self.__dict__[which] = widget
         else:
-            raise Exception('No such sub-widget: %s' % which)
+            raise GmtPyError('No such sub-widget: %s' % which)
 
         widget.set_parent(self)
 
@@ -2775,7 +2797,7 @@ class FrameLayout(Widget):
         if which in ('left', 'right', 'top', 'bottom', 'center'):
             return self.__dict__[which]
         else:
-            raise Exception('No such sub-widget: %s' % which)
+            raise GmtPyError('No such sub-widget: %s' % which)
 
     def get_children(self):
         return [self.left, self.right, self.top, self.bottom, self.center]
@@ -2865,13 +2887,13 @@ class GridLayout(Widget):
             ah = sh
 
         if ah < 0.0:
-            raise Exception("Container not wide enough for contents "
-                            "(GridLayout, available: %g cm, needed: %g cm)"
-                            % (sh/cm, (num.sum(esh.max(0)))/cm))
+            raise GmtPyError("Container not wide enough for contents "
+                             "(GridLayout, available: %g cm, needed: %g cm)"
+                             % (sh/cm, (num.sum(esh.max(0)))/cm))
         if av < 0.0:
-            raise Exception("Container not high enough for contents "
-                            "(GridLayout, available: %g cm, needed: %g cm)"
-                            % (sv/cm, (num.sum(esv.max(1)))/cm))
+            raise GmtPyError("Container not high enough for contents "
+                             "(GridLayout, available: %g cm, needed: %g cm)"
+                             % (sv/cm, (num.sum(esv.max(1)))/cm))
 
         nx, ny = esh.shape
 
@@ -3124,6 +3146,7 @@ class GMT(object):
         self.installation = get_gmt_installation(version)
         self.gmt_config = dict(self.installation['defaults'])
         self.eps_mode = eps_mode
+        self._shutil = shutil
 
         if config:
             self.gmt_config.update(config)
@@ -3203,9 +3226,8 @@ class GMT(object):
         f.close()
 
     def __del__(self):
-        import shutil
         if not self.keep_temp_dir:
-            shutil.rmtree(self.tempdir)
+            self._shutil.rmtree(self.tempdir)
 
     def _gmtcommand(self, command, *addargs, **kwargs):
 
@@ -3239,14 +3261,21 @@ class GMT(object):
         options = []
 
         gmt_config = self.gmt_config
-        gmt_config_filename = self.gmt_config_filename
-        if config_override:
-            gmt_config = self.gmt_config.copy()
-            gmt_config.update(config_override)
-            gmt_config_override_filename = pjoin(
-                self.tempdir, 'gmtdefaults_override')
-            self.gen_gmt_config_file(gmt_config_override_filename, gmt_config)
-            gmt_config_filename = gmt_config_override_filename
+        if not self.is_gmt5():
+            gmt_config_filename = self.gmt_config_filename
+            if config_override:
+                gmt_config = self.gmt_config.copy()
+                gmt_config.update(config_override)
+                gmt_config_override_filename = pjoin(
+                    self.tempdir, 'gmtdefaults_override')
+                self.gen_gmt_config_file(
+                    gmt_config_override_filename, gmt_config)
+                gmt_config_filename = gmt_config_override_filename
+
+        else:  # gmt5 needs override variables as --VAR=value
+            if config_override:
+                for k, v in config_override.items():
+                    options.append('--%s=%s' % (k, v))
 
         if out_discard:
             out_filename = '/dev/null'
@@ -3276,9 +3305,9 @@ class GMT(object):
         # convert option arguments to strings
         for k, v in kwargs.items():
             if len(k) > 1:
-                raise Exception('Found illegal keyword argument "%s" '
-                                'while preparing options for command "%s"'
-                                % (k, command))
+                raise GmtPyError('Found illegal keyword argument "%s" '
+                                 'while preparing options for command "%s"'
+                                 % (k, command))
 
             if type(v) is bool:
                 if v:
@@ -3309,10 +3338,10 @@ class GMT(object):
             args = [pjoin(self.installation['bin'], command)]
 
         if not os.path.isfile(args[0]):
-            raise Exception('No such file: %s' % args[0])
+            raise OSError('No such file: %s' % args[0])
         args.extend(options)
         args.extend(addargs)
-        if not suppressdefaults and not self.is_gmt5():
+        if not self.is_gmt5() and not suppressdefaults:
             # does not seem to work with GMT 5 (and should not be necessary
             args.append('+'+gmt_config_filename)
 
@@ -3355,15 +3384,14 @@ class GMT(object):
 
         if retcode != 0:
             self.keep_temp_dir = True
-            raise Exception('Command %s returned an error. '
-                            'While executing command:\n%s'
-                            % (command, escape_shell_args(args)))
+            raise GMTError('Command %s returned an error. '
+                           'While executing command:\n%s'
+                           % (command, escape_shell_args(args)))
 
         self.command_log.append(args)
 
     def __getattr__(self, command):
-
-        '''Maps to call self._gmtcommand(command, \*addargs, \*\*kwargs).
+        '''Maps to call self._gmtcommand(command, \\*addargs, \\*\\*kwargs).
 
         Execute arbitrary GMT command.
 
@@ -3386,7 +3414,7 @@ class GMT(object):
         not interested in the output.
 
         The standard input of the GMT process is fed by data selected with one
-        of the following `in_*` keyword arguments:
+        of the following ``in_*`` keyword arguments:
 
         =============== =======================================================
         ``in_stream``   Data is read from an open file like object.
@@ -3432,8 +3460,8 @@ class GMT(object):
     def tempfilename(self, name=None):
         '''Get filename for temporary file in the private temp directory.
 
-           If no ``name`` argument is given, a random name is picked. If `name`
-           is given, returns a path ending in that ``name``.'''
+           If no ``name`` argument is given, a random name is picked. If
+           ``name`` is given, returns a path ending in that ``name``.'''
 
         if not name:
             name = ''.join(
@@ -3471,8 +3499,8 @@ class GMT(object):
         self.load_unfinished(filename)
 
     def save(self, filename=None, bbox=None, resolution=150, oversample=2.,
-             width=None, height=None, size=None, crop_eps_mode=False):
-
+             width=None, height=None, size=None, crop_eps_mode=False,
+             psconvert=False):
         '''
         Finish and save figure as PDF, PS or PPM file.
 
@@ -3534,9 +3562,18 @@ class GMT(object):
         else:
             shutil.move(tempfn, tempfn + '.eps')
 
-        if filename.endswith('.pdf'):
-            subprocess.call(['gmtpy-epstopdf', '--res=%i' % resolution,
-                             '--outfile=' + filename, tempfn + '.eps'])
+        if filename.endswith('.eps'):
+            shutil.move(tempfn + '.eps', filename)
+            return
+
+        elif filename.endswith('.pdf'):
+            if psconvert:
+                gmt_bin = pjoin(self.installation['bin'], 'gmt')
+                subprocess.call([gmt_bin, 'psconvert', tempfn, '-Tf',
+                                 '-F' + filename])
+            else:
+                subprocess.call(['gmtpy-epstopdf', '--res=%i' % resolution,
+                                 '--outfile=' + filename, tempfn + '.eps'])
         else:
             subprocess.call([
                 'gmtpy-epstopdf',
@@ -3623,7 +3660,7 @@ class GMT(object):
             w, h = self.page_size_points()
 
             if w is None or h is None:
-                raise Exception("Can't determine page size for layout")
+                raise GmtPyError("Can't determine page size for layout")
 
             pm = paper_media(self.gmt_config).lower()
 
@@ -3879,11 +3916,11 @@ class Simple(object):
 
     def setup_scaling_extra(self, scaler, conf):
 
-        scaler_x = copy.deepcopy(scaler)
+        scaler_x = scaler.copy()
         scaler_x.data_ranges[1] = (0., 1.)
         scaler_x.axes[1].mode = 'off'
 
-        scaler_y = copy.deepcopy(scaler)
+        scaler_y = scaler.copy()
         scaler_y.data_ranges[0] = (0., 1.)
         scaler_y.axes[0].mode = 'off'
 
@@ -3911,14 +3948,16 @@ class Simple(object):
             fn_mean = gmt.tempfilename()
 
             if dpd.method in ('surface', 'triangulate'):
-                gmt.blockmean(in_columns=dpd.data, I='%i+/%i+' % dpd.size,
-                              out_filename=fn_mean,  *R)
+                gmt.blockmean(in_columns=dpd.data,
+                              I='%i+/%i+' % dpd.size,  # noqa
+                              out_filename=fn_mean, *R)
 
                 if dpd.method == 'surface':
                     gmt.surface(
                         in_filename=fn_mean,
                         T=dpd.tension,
-                        G=fn_grid, I='%i+/%i+' % dpd.size,
+                        G=fn_grid,
+                        I='%i+/%i+' % dpd.size,  # noqa
                         out_discard=True,
                         *R)
 
@@ -3926,8 +3965,9 @@ class Simple(object):
                     gmt.triangulate(
                         in_filename=fn_mean,
                         G=fn_grid,
-                        I='%i+/%i+' % dpd.size,
+                        I='%i+/%i+' % dpd.size,  # noqa
                         out_discard=True,
+                        V=True,
                         *R)
 
                 if gmt.is_gmt5():
@@ -3946,7 +3986,8 @@ class Simple(object):
             if dpd.method == 'fillcontour':
                 extra = dict(C=fn_cpt)
                 extra.update(dpd.extra)
-                gmt.pscontour(in_columns=dpd.data, I=True, *rxyj, **extra)
+                gmt.pscontour(in_columns=dpd.data,
+                              I=True, *rxyj, **extra)  # noqa
 
             if dpd.method == 'contour':
                 extra = dict(W='0.5p,black', C=fn_cpt)
@@ -4125,7 +4166,8 @@ def nice_palette(gmt, widget, scaleguru, cptfile, zlabeloffset=0.8*inch,
     pal_r = (0, 1, par['zmin'], par['zmax'])
     pal_ax_r = (0, 1, par_ax['zmin'], par_ax['zmax'])
     gmt.xyz2grd(
-        G=palgrdfile, R=pal_r, I=(1, pdz), in_columns=(px, pz, pz),
+        G=palgrdfile, R=pal_r,
+        I=(1, pdz), in_columns=(px, pz, pz),  # noqa
         out_discard=True)
 
     gmt.grdimage(palgrdfile, R=pal_r, C=cptfile, *widget.JXY())
@@ -4139,15 +4181,17 @@ def nice_palette(gmt, widget, scaleguru, cptfile, zlabeloffset=0.8*inch,
         ticklen = negpalwid
     else:
         ticklen = '0p'
+
+    TICK_LENGTH_PARAM = 'MAP_TICK_LENGTH' if gmt.is_gmt5() else 'TICK_LENGTH'
     gmt.psbasemap(
         R=pal_ax_r, B='4::/%(zinc)g::nsw' % par_ax,
-        config={'TICK_LENGTH': ticklen},
+        config={TICK_LENGTH_PARAM: ticklen},
         *widget.JXY())
 
     if innerticks:
         gmt.psbasemap(
             R=pal_ax_r, B='4::/%(zinc)g::E' % par_ax,
-            config={'TICK_LENGTH': '0p'},
+            config={TICK_LENGTH_PARAM: '0p'},
             *widget.JXY())
     else:
         gmt.psbasemap(R=pal_ax_r, B='4::/%(zinc)g::E' % par_ax, *widget.JXY())
@@ -4163,12 +4207,19 @@ def nice_palette(gmt, widget, scaleguru, cptfile, zlabeloffset=0.8*inch,
                      par_ax['zlabel'])],
             *widget.JXY())
 
+
 if __name__ == '__main__':
 
     examples_dir = 'gmtpy_module_examples'
     if os.path.exists(examples_dir):
         shutil.rmtree(examples_dir)
     os.mkdir(examples_dir)
+
+    ### Define compat names.
+
+    PS_MEDIA = 'PS_MEDIA' if is_gmt5() else 'PAPER_MEDIA'
+    PS_PAGE_COLOR = 'PS_PAGE_COLOR' if is_gmt5() else 'PAGE_COLOR'
+    MAP_DEFAULT_PEN = 'MAP_DEFAULT_PEN' if is_gmt5() else 'BASEMAP_FRAME_RGB'
 
     ### Example 0
 
@@ -4187,8 +4238,8 @@ if __name__ == '__main__':
 
     ### Example 2
 
-    gmt = GMT(
-        config=dict(PAPER_MEDIA='Custom_%ix%i' % (int(7*inch), int(7*inch))))
+    conf = {PS_MEDIA: 'Custom_%ix%i' % (int(7*inch), int(7*inch))}
+    gmt = GMT(config=conf)
 
     gmt.pscoast(
         R='g',
@@ -4222,7 +4273,7 @@ if __name__ == '__main__':
 
     ### Example 3
 
-    conf = {'PAGE_COLOR': '0/0/0', 'BASEMAP_FRAME_RGB': '255/255/255'}
+    conf = {PS_PAGE_COLOR: '0/0/0', MAP_DEFAULT_PEN: '255/255/255'}
     gmt = GMT(config=conf)
     widget = gmt.default_layout().get_widget()
     gmt.psbasemap(
@@ -4249,8 +4300,8 @@ if __name__ == '__main__':
              scaled_unit_factor=1e9, approx_ticks=5, space=0.05)
 
     guru = ScaleGuru([(x, y1), (x, y2)], axes=(xax, yax))
-    gmt = GMT(
-        config={'PAPER_MEDIA': 'Custom_%ix%i' % (int(8*inch), int(3*inch))})
+    conf = {PS_MEDIA: 'Custom_%ix%i' % (int(8*inch), int(3*inch))}
+    gmt = GMT(config=conf)
     layout = gmt.default_layout()
     widget = layout.get_widget()
 
@@ -4282,7 +4333,7 @@ if __name__ == '__main__':
 
     ### Example 6
 
-    gmt = GMT(config={'PAPER_MEDIA': 'a3'})
+    gmt = GMT(config={PS_MEDIA: 'a3'})
     nx, ny = 2, 5
     grid = GridLayout(nx, ny)
 

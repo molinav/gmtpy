@@ -32,7 +32,6 @@ import math
 import numpy as num
 import copy
 from select import select
-from scipy.io import netcdf
 
 try:
     newstr = unicode
@@ -1456,6 +1455,8 @@ def gmtdefaults_as_text(version='newest'):
 def savegrd(x, y, z, filename, title=None, naming='xy'):
     '''Write COARDS compliant netcdf (grd) file.'''
 
+    from scipy.io import netcdf
+
     assert y.size, x.size == z.shape
     ny, nx = z.shape
     nc = netcdf.netcdf_file(filename, 'w')
@@ -1507,6 +1508,8 @@ def to_array(var):
 
 def loadgrd(filename):
     '''Read COARDS compliant netcdf (grd) file.'''
+
+    from scipy.io import netcdf
 
     nc = netcdf.netcdf_file(filename, 'r')
     vkeys = list(nc.variables.keys())

@@ -317,800 +317,580 @@ def all_installed_gmt_versions():
 # changed.
 
 _gmt_defaults_by_version = {}
-_gmt_defaults_by_version['4.2.1'] = r'''
+_gmt_defaults_by_version['4.2.0'] = r'''
 #
-#       GMT-SYSTEM 4.2.1 Defaults file
+#       GMT-SYSTEM 4.2.x Defaults file
 #
 #-------- Plot Media Parameters -------------
-PAGE_COLOR              = 255/255/255
-PAGE_ORIENTATION        = portrait
-PAPER_MEDIA             = a4+
+PAGE_COLOR                     = 255/255/255
+PAGE_ORIENTATION               = portrait
+PAPER_MEDIA                    = a4+
 #-------- Basemap Annotation Parameters ------
-ANNOT_MIN_ANGLE         = 20
-ANNOT_MIN_SPACING       = 0
-ANNOT_FONT_PRIMARY      = Helvetica
-ANNOT_FONT_SIZE         = 12p
-ANNOT_OFFSET_PRIMARY    = 0.075i
-ANNOT_FONT_SECONDARY    = Helvetica
-ANNOT_FONT_SIZE_SECONDARY       = 16p
-ANNOT_OFFSET_SECONDARY  = 0.075i
-DEGREE_SYMBOL           = ring
-HEADER_FONT             = Helvetica
-HEADER_FONT_SIZE        = 36p
-HEADER_OFFSET           = 0.1875i
-LABEL_FONT              = Helvetica
-LABEL_FONT_SIZE         = 14p
-LABEL_OFFSET            = 0.1125i
-OBLIQUE_ANNOTATION      = 1
-PLOT_CLOCK_FORMAT       = hh:mm:ss
-PLOT_DATE_FORMAT        = yyyy-mm-dd
-PLOT_DEGREE_FORMAT      = +ddd:mm:ss
-Y_AXIS_TYPE             = hor_text
+ANNOT_MIN_ANGLE                = 20
+ANNOT_MIN_SPACING              = 0
+ANNOT_FONT_PRIMARY             = Helvetica
+ANNOT_FONT_SIZE                = 12p
+ANNOT_OFFSET_PRIMARY           = 0.075i
+ANNOT_FONT_SECONDARY           = Helvetica
+ANNOT_FONT_SIZE_SECONDARY      = 16p
+ANNOT_OFFSET_SECONDARY         = 0.075i
+DEGREE_SYMBOL                  = ring
+HEADER_FONT                    = Helvetica
+HEADER_FONT_SIZE               = 36p
+HEADER_OFFSET                  = 0.1875i
+LABEL_FONT                     = Helvetica
+LABEL_FONT_SIZE                = 14p
+LABEL_OFFSET                   = 0.1125i
+OBLIQUE_ANNOTATION             = 1
+PLOT_CLOCK_FORMAT              = hh:mm:ss
+PLOT_DATE_FORMAT               = yyyy-mm-dd
+PLOT_DEGREE_FORMAT             = +ddd:mm:ss
+Y_AXIS_TYPE                    = hor_text
 #-------- Basemap Layout Parameters ---------
-BASEMAP_AXES            = WESN
-BASEMAP_FRAME_RGB       = 0/0/0
-BASEMAP_TYPE            = plain
-FRAME_PEN               = 1.25p
-FRAME_WIDTH             = 0.075i
-GRID_CROSS_SIZE_PRIMARY = 0i
-GRID_CROSS_SIZE_SECONDARY       = 0i
-GRID_PEN_PRIMARY        = 0.25p
-GRID_PEN_SECONDARY      = 0.5p
-MAP_SCALE_HEIGHT        = 0.075i
-TICK_LENGTH             = 0.075i
-POLAR_CAP               = 85/90
-TICK_PEN                = 0.5p
-X_AXIS_LENGTH           = 9i
-Y_AXIS_LENGTH           = 6i
-X_ORIGIN                = 1i
-Y_ORIGIN                = 1i
-UNIX_TIME               = FALSE
-UNIX_TIME_POS           = -0.75i/-0.75i
+BASEMAP_AXES                   = WESN
+BASEMAP_FRAME_RGB              = 0/0/0
+BASEMAP_TYPE                   = plain
+FRAME_PEN                      = 1.25p
+FRAME_WIDTH                    = 0.075i
+GRID_CROSS_SIZE_PRIMARY        = 0i
+GRID_CROSS_SIZE_SECONDARY      = 0i
+GRID_PEN_PRIMARY               = 0.25p
+GRID_PEN_SECONDARY             = 0.5p
+MAP_SCALE_HEIGHT               = 0.075i
+TICK_LENGTH                    = 0.075i
+POLAR_CAP                      = 85/90
+TICK_PEN                       = 0.5p
+X_AXIS_LENGTH                  = 9i
+Y_AXIS_LENGTH                  = 6i
+X_ORIGIN                       = 1i
+Y_ORIGIN                       = 1i
+UNIX_TIME                      = FALSE
+UNIX_TIME_POS                  = -0.75i/-0.75i
 #-------- Color System Parameters -----------
-COLOR_BACKGROUND        = 0/0/0
-COLOR_FOREGROUND        = 255/255/255
-COLOR_NAN               = 128/128/128
-COLOR_IMAGE             = adobe
-COLOR_MODEL             = rgb
-HSV_MIN_SATURATION      = 1
-HSV_MAX_SATURATION      = 0.1
-HSV_MIN_VALUE           = 0.3
-HSV_MAX_VALUE           = 1
+COLOR_BACKGROUND               = 0/0/0
+COLOR_FOREGROUND               = 255/255/255
+COLOR_NAN                      = 128/128/128
+COLOR_IMAGE                    = adobe
+COLOR_MODEL                    = rgb
+HSV_MIN_SATURATION             = 1
+HSV_MAX_SATURATION             = 0.1
+HSV_MIN_VALUE                  = 0.3
+HSV_MAX_VALUE                  = 1
 #-------- PostScript Parameters -------------
-CHAR_ENCODING           = ISOLatin1+
-DOTS_PR_INCH            = 300
-N_COPIES                = 1
-PS_COLOR                = rgb
-PS_IMAGE_COMPRESS       = none
-PS_IMAGE_FORMAT         = ascii
-PS_LINE_CAP             = round
-PS_LINE_JOIN            = miter
-PS_MITER_LIMIT          = 35
-PS_VERBOSE                      = FALSE
-GLOBAL_X_SCALE          = 1
-GLOBAL_Y_SCALE          = 1
+CHAR_ENCODING                  = ISOLatin1+
+DOTS_PR_INCH                   = 300
+N_COPIES                       = 1
+PS_COLOR                       = rgb
+PS_IMAGE_COMPRESS              = none
+PS_IMAGE_FORMAT                = ascii
+PS_LINE_CAP                    = round
+PS_LINE_JOIN                   = miter
+PS_MITER_LIMIT                 = 35
+PS_VERBOSE                     = FALSE
+GLOBAL_X_SCALE                 = 1
+GLOBAL_Y_SCALE                 = 1
 #-------- I/O Format Parameters -------------
-D_FORMAT                = %lg
-FIELD_DELIMITER         = tab
-GRIDFILE_SHORTHAND      = FALSE
-GRID_FORMAT             = nf
-INPUT_CLOCK_FORMAT      = hh:mm:ss
-INPUT_DATE_FORMAT       = yyyy-mm-dd
-IO_HEADER               = FALSE
-N_HEADER_RECS           = 1
-OUTPUT_CLOCK_FORMAT     = hh:mm:ss
-OUTPUT_DATE_FORMAT      = yyyy-mm-dd
-OUTPUT_DEGREE_FORMAT    = +D
-XY_TOGGLE               = FALSE
+D_FORMAT                       = %lg
+FIELD_DELIMITER                = tab
+GRIDFILE_SHORTHAND             = FALSE
+GRID_FORMAT                    = nf
+INPUT_CLOCK_FORMAT             = hh:mm:ss
+INPUT_DATE_FORMAT              = yyyy-mm-dd
+IO_HEADER                      = FALSE
+N_HEADER_RECS                  = 1
+OUTPUT_CLOCK_FORMAT            = hh:mm:ss
+OUTPUT_DATE_FORMAT             = yyyy-mm-dd
+OUTPUT_DEGREE_FORMAT           = +D
+XY_TOGGLE                      = FALSE
 #-------- Projection Parameters -------------
-ELLIPSOID               = WGS-84
-MAP_SCALE_FACTOR        = default
-MEASURE_UNIT            = inch
+ELLIPSOID                      = WGS-84
+MAP_SCALE_FACTOR               = default
+MEASURE_UNIT                   = inch
 #-------- Calendar/Time Parameters ----------
-TIME_FORMAT_PRIMARY     = full
-TIME_FORMAT_SECONDARY   = full
-TIME_EPOCH              = 2000-01-01T00:00:00
-TIME_IS_INTERVAL        = OFF
-TIME_INTERVAL_FRACTION  = 0.5
-TIME_LANGUAGE           = us
-TIME_SYSTEM             = other
-TIME_UNIT               = d
-TIME_WEEK_START         = Sunday
-Y2K_OFFSET_YEAR         = 1950
+TIME_FORMAT_PRIMARY            = full
+TIME_FORMAT_SECONDARY          = full
+TIME_EPOCH                     = 2000-01-01T00:00:00
+TIME_IS_INTERVAL               = OFF
+TIME_INTERVAL_FRACTION         = 0.5
+TIME_LANGUAGE                  = us
+TIME_SYSTEM                    = other
+TIME_UNIT                      = d
+TIME_WEEK_START                = Sunday
+Y2K_OFFSET_YEAR                = 1950
 #-------- Miscellaneous Parameters ----------
-HISTORY                 = TRUE
-INTERPOLANT             = akima
-LINE_STEP               = 0.01i
-VECTOR_SHAPE            = 0
-VERBOSE                 = FALSE'''
+HISTORY                        = TRUE
+INTERPOLANT                    = akima
+LINE_STEP                      = 0.01i
+VECTOR_SHAPE                   = 0
+VERBOSE                        = FALSE
+'''
 
 _gmt_defaults_by_version['4.3.0'] = r'''
 #
-#	GMT-SYSTEM 4.3.0 Defaults file
+#       GMT-SYSTEM 4.3.x Defaults file
 #
 #-------- Plot Media Parameters -------------
-PAGE_COLOR		= 255/255/255
-PAGE_ORIENTATION	= portrait
-PAPER_MEDIA		= a4+
+PAGE_COLOR                     = 255/255/255
+PAGE_ORIENTATION               = portrait
+PAPER_MEDIA                    = a4+
 #-------- Basemap Annotation Parameters ------
-ANNOT_MIN_ANGLE		= 20
-ANNOT_MIN_SPACING	= 0
-ANNOT_FONT_PRIMARY	= Helvetica
-ANNOT_FONT_SIZE_PRIMARY	= 12p
-ANNOT_OFFSET_PRIMARY	= 0.075i
-ANNOT_FONT_SECONDARY	= Helvetica
-ANNOT_FONT_SIZE_SECONDARY	= 16p
-ANNOT_OFFSET_SECONDARY	= 0.075i
-DEGREE_SYMBOL		= ring
-HEADER_FONT		= Helvetica
-HEADER_FONT_SIZE	= 36p
-HEADER_OFFSET		= 0.1875i
-LABEL_FONT		= Helvetica
-LABEL_FONT_SIZE		= 14p
-LABEL_OFFSET		= 0.1125i
-OBLIQUE_ANNOTATION	= 1
-PLOT_CLOCK_FORMAT	= hh:mm:ss
-PLOT_DATE_FORMAT	= yyyy-mm-dd
-PLOT_DEGREE_FORMAT	= +ddd:mm:ss
-Y_AXIS_TYPE		= hor_text
+ANNOT_MIN_ANGLE                = 20
+ANNOT_MIN_SPACING              = 0
+ANNOT_FONT_PRIMARY             = Helvetica
+ANNOT_FONT_SIZE_PRIMARY        = 12p
+ANNOT_OFFSET_PRIMARY           = 0.075i
+ANNOT_FONT_SECONDARY           = Helvetica
+ANNOT_FONT_SIZE_SECONDARY      = 16p
+ANNOT_OFFSET_SECONDARY         = 0.075i
+DEGREE_SYMBOL                  = ring
+HEADER_FONT                    = Helvetica
+HEADER_FONT_SIZE               = 36p
+HEADER_OFFSET                  = 0.1875i
+LABEL_FONT                     = Helvetica
+LABEL_FONT_SIZE                = 14p
+LABEL_OFFSET                   = 0.1125i
+OBLIQUE_ANNOTATION             = 1
+PLOT_CLOCK_FORMAT              = hh:mm:ss
+PLOT_DATE_FORMAT               = yyyy-mm-dd
+PLOT_DEGREE_FORMAT             = +ddd:mm:ss
+Y_AXIS_TYPE                    = hor_text
 #-------- Basemap Layout Parameters ---------
-BASEMAP_AXES		= WESN
-BASEMAP_FRAME_RGB	= 0/0/0
-BASEMAP_TYPE		= plain
-FRAME_PEN		= 1.25p
-FRAME_WIDTH		= 0.075i
-GRID_CROSS_SIZE_PRIMARY	= 0i
-GRID_PEN_PRIMARY	= 0.25p
-GRID_CROSS_SIZE_SECONDARY	= 0i
-GRID_PEN_SECONDARY	= 0.5p
-MAP_SCALE_HEIGHT	= 0.075i
-POLAR_CAP		= 85/90
-TICK_LENGTH		= 0.075i
-TICK_PEN		= 0.5p
-X_AXIS_LENGTH		= 9i
-Y_AXIS_LENGTH		= 6i
-X_ORIGIN		= 1i
-Y_ORIGIN		= 1i
-UNIX_TIME		= FALSE
-UNIX_TIME_POS		= BL/-0.75i/-0.75i
-UNIX_TIME_FORMAT	= %Y %b %d %H:%M:%S
+BASEMAP_AXES                   = WESN
+BASEMAP_FRAME_RGB              = 0/0/0
+BASEMAP_TYPE                   = plain
+FRAME_PEN                      = 1.25p
+FRAME_WIDTH                    = 0.075i
+GRID_CROSS_SIZE_PRIMARY        = 0i
+GRID_PEN_PRIMARY               = 0.25p
+GRID_CROSS_SIZE_SECONDARY      = 0i
+GRID_PEN_SECONDARY             = 0.5p
+MAP_SCALE_HEIGHT               = 0.075i
+POLAR_CAP                      = 85/90
+TICK_LENGTH                    = 0.075i
+TICK_PEN                       = 0.5p
+X_AXIS_LENGTH                  = 9i
+Y_AXIS_LENGTH                  = 6i
+X_ORIGIN                       = 1i
+Y_ORIGIN                       = 1i
+UNIX_TIME                      = FALSE
+UNIX_TIME_POS                  = BL/-0.75i/-0.75i
+UNIX_TIME_FORMAT               = %Y %b %d %H:%M:%S
 #-------- Color System Parameters -----------
-COLOR_BACKGROUND	= 0/0/0
-COLOR_FOREGROUND	= 255/255/255
-COLOR_NAN		= 128/128/128
-COLOR_IMAGE		= adobe
-COLOR_MODEL		= rgb
-HSV_MIN_SATURATION	= 1
-HSV_MAX_SATURATION	= 0.1
-HSV_MIN_VALUE		= 0.3
-HSV_MAX_VALUE		= 1
+COLOR_BACKGROUND               = 0/0/0
+COLOR_FOREGROUND               = 255/255/255
+COLOR_NAN                      = 128/128/128
+COLOR_IMAGE                    = adobe
+COLOR_MODEL                    = rgb
+HSV_MIN_SATURATION             = 1
+HSV_MAX_SATURATION             = 0.1
+HSV_MIN_VALUE                  = 0.3
+HSV_MAX_VALUE                  = 1
 #-------- PostScript Parameters -------------
-CHAR_ENCODING		= ISOLatin1+
-DOTS_PR_INCH		= 300
-N_COPIES		= 1
-PS_COLOR		= rgb
-PS_IMAGE_COMPRESS	= none
-PS_IMAGE_FORMAT		= ascii
-PS_LINE_CAP		= round
-PS_LINE_JOIN		= miter
-PS_MITER_LIMIT		= 35
-PS_VERBOSE		= FALSE
-GLOBAL_X_SCALE		= 1
-GLOBAL_Y_SCALE		= 1
+CHAR_ENCODING                  = ISOLatin1+
+DOTS_PR_INCH                   = 300
+N_COPIES                       = 1
+PS_COLOR                       = rgb
+PS_IMAGE_COMPRESS              = none
+PS_IMAGE_FORMAT                = ascii
+PS_LINE_CAP                    = round
+PS_LINE_JOIN                   = miter
+PS_MITER_LIMIT                 = 35
+PS_VERBOSE                     = FALSE
+GLOBAL_X_SCALE                 = 1
+GLOBAL_Y_SCALE                 = 1
 #-------- I/O Format Parameters -------------
-D_FORMAT		= %lg
-FIELD_DELIMITER		= tab
-GRIDFILE_SHORTHAND	= FALSE
-GRID_FORMAT		= nf
-INPUT_CLOCK_FORMAT	= hh:mm:ss
-INPUT_DATE_FORMAT	= yyyy-mm-dd
-IO_HEADER		= FALSE
-N_HEADER_RECS		= 1
-OUTPUT_CLOCK_FORMAT	= hh:mm:ss
-OUTPUT_DATE_FORMAT	= yyyy-mm-dd
-OUTPUT_DEGREE_FORMAT	= +D
-XY_TOGGLE		= FALSE
+D_FORMAT                       = %lg
+FIELD_DELIMITER                = tab
+GRIDFILE_SHORTHAND             = FALSE
+GRID_FORMAT                    = nf
+INPUT_CLOCK_FORMAT             = hh:mm:ss
+INPUT_DATE_FORMAT              = yyyy-mm-dd
+IO_HEADER                      = FALSE
+N_HEADER_RECS                  = 1
+OUTPUT_CLOCK_FORMAT            = hh:mm:ss
+OUTPUT_DATE_FORMAT             = yyyy-mm-dd
+OUTPUT_DEGREE_FORMAT           = +D
+XY_TOGGLE                      = FALSE
 #-------- Projection Parameters -------------
-ELLIPSOID		= WGS-84
-MAP_SCALE_FACTOR	= default
-MEASURE_UNIT		= inch
+ELLIPSOID                      = WGS-84
+MAP_SCALE_FACTOR               = default
+MEASURE_UNIT                   = inch
 #-------- Calendar/Time Parameters ----------
-TIME_FORMAT_PRIMARY	= full
-TIME_FORMAT_SECONDARY	= full
-TIME_EPOCH		= 2000-01-01T00:00:00
-TIME_IS_INTERVAL	= OFF
-TIME_INTERVAL_FRACTION	= 0.5
-TIME_LANGUAGE		= us
-TIME_UNIT		= d
-TIME_WEEK_START		= Sunday
-Y2K_OFFSET_YEAR		= 1950
+TIME_FORMAT_PRIMARY            = full
+TIME_FORMAT_SECONDARY          = full
+TIME_EPOCH                     = 2000-01-01T00:00:00
+TIME_IS_INTERVAL               = OFF
+TIME_INTERVAL_FRACTION         = 0.5
+TIME_LANGUAGE                  = us
+TIME_UNIT                      = d
+TIME_WEEK_START                = Sunday
+Y2K_OFFSET_YEAR                = 1950
 #-------- Miscellaneous Parameters ----------
-HISTORY			= TRUE
-INTERPOLANT		= akima
-LINE_STEP		= 0.01i
-VECTOR_SHAPE		= 0
-VERBOSE			= FALSE'''
-
-
-_gmt_defaults_by_version['4.3.1'] = r'''
-#
-#	GMT-SYSTEM 4.3.1 Defaults file
-#
-#-------- Plot Media Parameters -------------
-PAGE_COLOR		= 255/255/255
-PAGE_ORIENTATION	= portrait
-PAPER_MEDIA		= a4+
-#-------- Basemap Annotation Parameters ------
-ANNOT_MIN_ANGLE		= 20
-ANNOT_MIN_SPACING	= 0
-ANNOT_FONT_PRIMARY	= Helvetica
-ANNOT_FONT_SIZE_PRIMARY	= 12p
-ANNOT_OFFSET_PRIMARY	= 0.075i
-ANNOT_FONT_SECONDARY	= Helvetica
-ANNOT_FONT_SIZE_SECONDARY	= 16p
-ANNOT_OFFSET_SECONDARY	= 0.075i
-DEGREE_SYMBOL		= ring
-HEADER_FONT		= Helvetica
-HEADER_FONT_SIZE	= 36p
-HEADER_OFFSET		= 0.1875i
-LABEL_FONT		= Helvetica
-LABEL_FONT_SIZE		= 14p
-LABEL_OFFSET		= 0.1125i
-OBLIQUE_ANNOTATION	= 1
-PLOT_CLOCK_FORMAT	= hh:mm:ss
-PLOT_DATE_FORMAT	= yyyy-mm-dd
-PLOT_DEGREE_FORMAT	= +ddd:mm:ss
-Y_AXIS_TYPE		= hor_text
-#-------- Basemap Layout Parameters ---------
-BASEMAP_AXES		= WESN
-BASEMAP_FRAME_RGB	= 0/0/0
-BASEMAP_TYPE		= plain
-FRAME_PEN		= 1.25p
-FRAME_WIDTH		= 0.075i
-GRID_CROSS_SIZE_PRIMARY	= 0i
-GRID_PEN_PRIMARY	= 0.25p
-GRID_CROSS_SIZE_SECONDARY	= 0i
-GRID_PEN_SECONDARY	= 0.5p
-MAP_SCALE_HEIGHT	= 0.075i
-POLAR_CAP		= 85/90
-TICK_LENGTH		= 0.075i
-TICK_PEN		= 0.5p
-X_AXIS_LENGTH		= 9i
-Y_AXIS_LENGTH		= 6i
-X_ORIGIN		= 1i
-Y_ORIGIN		= 1i
-UNIX_TIME		= FALSE
-UNIX_TIME_POS		= BL/-0.75i/-0.75i
-UNIX_TIME_FORMAT	= %Y %b %d %H:%M:%S
-#-------- Color System Parameters -----------
-COLOR_BACKGROUND	= 0/0/0
-COLOR_FOREGROUND	= 255/255/255
-COLOR_NAN		= 128/128/128
-COLOR_IMAGE		= adobe
-COLOR_MODEL		= rgb
-HSV_MIN_SATURATION	= 1
-HSV_MAX_SATURATION	= 0.1
-HSV_MIN_VALUE		= 0.3
-HSV_MAX_VALUE		= 1
-#-------- PostScript Parameters -------------
-CHAR_ENCODING		= ISOLatin1+
-DOTS_PR_INCH		= 300
-N_COPIES		= 1
-PS_COLOR		= rgb
-PS_IMAGE_COMPRESS	= none
-PS_IMAGE_FORMAT		= ascii
-PS_LINE_CAP		= round
-PS_LINE_JOIN		= miter
-PS_MITER_LIMIT		= 35
-PS_VERBOSE		= FALSE
-GLOBAL_X_SCALE		= 1
-GLOBAL_Y_SCALE		= 1
-#-------- I/O Format Parameters -------------
-D_FORMAT		= %lg
-FIELD_DELIMITER		= tab
-GRIDFILE_SHORTHAND	= FALSE
-GRID_FORMAT		= nf
-INPUT_CLOCK_FORMAT	= hh:mm:ss
-INPUT_DATE_FORMAT	= yyyy-mm-dd
-IO_HEADER		= FALSE
-N_HEADER_RECS		= 1
-OUTPUT_CLOCK_FORMAT	= hh:mm:ss
-OUTPUT_DATE_FORMAT	= yyyy-mm-dd
-OUTPUT_DEGREE_FORMAT	= +D
-XY_TOGGLE		= FALSE
-#-------- Projection Parameters -------------
-ELLIPSOID		= WGS-84
-MAP_SCALE_FACTOR	= default
-MEASURE_UNIT		= inch
-#-------- Calendar/Time Parameters ----------
-TIME_FORMAT_PRIMARY	= full
-TIME_FORMAT_SECONDARY	= full
-TIME_EPOCH		= 2000-01-01T00:00:00
-TIME_IS_INTERVAL	= OFF
-TIME_INTERVAL_FRACTION	= 0.5
-TIME_LANGUAGE		= us
-TIME_UNIT		= d
-TIME_WEEK_START		= Sunday
-Y2K_OFFSET_YEAR		= 1950
-#-------- Miscellaneous Parameters ----------
-HISTORY			= TRUE
-INTERPOLANT		= akima
-LINE_STEP		= 0.01i
-VECTOR_SHAPE		= 0
-VERBOSE			= FALSE'''
-
+HISTORY                        = TRUE
+INTERPOLANT                    = akima
+LINE_STEP                      = 0.01i
+VECTOR_SHAPE                   = 0
+VERBOSE                        = FALSE
+'''
 
 _gmt_defaults_by_version['4.4.0'] = r'''
 #
-#       GMT-SYSTEM 4.4.0 [64-bit] Defaults file
+#       GMT-SYSTEM 4.4.x Defaults file
 #
 #-------- Plot Media Parameters -------------
-PAGE_COLOR              = 255/255/255
-PAGE_ORIENTATION        = portrait
-PAPER_MEDIA             = a4+
+PAGE_COLOR                     = 255/255/255
+PAGE_ORIENTATION               = portrait
+PAPER_MEDIA                    = a4+
 #-------- Basemap Annotation Parameters ------
-ANNOT_MIN_ANGLE         = 20
-ANNOT_MIN_SPACING       = 0
-ANNOT_FONT_PRIMARY      = Helvetica
-ANNOT_FONT_SIZE_PRIMARY = 14p
-ANNOT_OFFSET_PRIMARY    = 0.075i
-ANNOT_FONT_SECONDARY    = Helvetica
-ANNOT_FONT_SIZE_SECONDARY       = 16p
-ANNOT_OFFSET_SECONDARY  = 0.075i
-DEGREE_SYMBOL           = ring
-HEADER_FONT             = Helvetica
-HEADER_FONT_SIZE        = 36p
-HEADER_OFFSET           = 0.1875i
-LABEL_FONT              = Helvetica
-LABEL_FONT_SIZE         = 14p
-LABEL_OFFSET            = 0.1125i
-OBLIQUE_ANNOTATION      = 1
-PLOT_CLOCK_FORMAT       = hh:mm:ss
-PLOT_DATE_FORMAT        = yyyy-mm-dd
-PLOT_DEGREE_FORMAT      = +ddd:mm:ss
-Y_AXIS_TYPE             = hor_text
+ANNOT_MIN_ANGLE                = 20
+ANNOT_MIN_SPACING              = 0
+ANNOT_FONT_PRIMARY             = Helvetica
+ANNOT_FONT_SIZE_PRIMARY        = 14p
+ANNOT_OFFSET_PRIMARY           = 0.075i
+ANNOT_FONT_SECONDARY           = Helvetica
+ANNOT_FONT_SIZE_SECONDARY      = 16p
+ANNOT_OFFSET_SECONDARY         = 0.075i
+DEGREE_SYMBOL                  = ring
+HEADER_FONT                    = Helvetica
+HEADER_FONT_SIZE               = 36p
+HEADER_OFFSET                  = 0.1875i
+LABEL_FONT                     = Helvetica
+LABEL_FONT_SIZE                = 14p
+LABEL_OFFSET                   = 0.1125i
+OBLIQUE_ANNOTATION             = 1
+PLOT_CLOCK_FORMAT              = hh:mm:ss
+PLOT_DATE_FORMAT               = yyyy-mm-dd
+PLOT_DEGREE_FORMAT             = +ddd:mm:ss
+Y_AXIS_TYPE                    = hor_text
 #-------- Basemap Layout Parameters ---------
-BASEMAP_AXES            = WESN
-BASEMAP_FRAME_RGB       = 0/0/0
-BASEMAP_TYPE            = plain
-FRAME_PEN               = 1.25p
-FRAME_WIDTH             = 0.075i
-GRID_CROSS_SIZE_PRIMARY = 0i
-GRID_PEN_PRIMARY        = 0.25p
-GRID_CROSS_SIZE_SECONDARY       = 0i
-GRID_PEN_SECONDARY      = 0.5p
-MAP_SCALE_HEIGHT        = 0.075i
-POLAR_CAP               = 85/90
-TICK_LENGTH             = 0.075i
-TICK_PEN                = 0.5p
-X_AXIS_LENGTH           = 9i
-Y_AXIS_LENGTH           = 6i
-X_ORIGIN                = 1i
-Y_ORIGIN                = 1i
-UNIX_TIME               = FALSE
-UNIX_TIME_POS           = BL/-0.75i/-0.75i
-UNIX_TIME_FORMAT        = %Y %b %d %H:%M:%S
+BASEMAP_AXES                   = WESN
+BASEMAP_FRAME_RGB              = 0/0/0
+BASEMAP_TYPE                   = plain
+FRAME_PEN                      = 1.25p
+FRAME_WIDTH                    = 0.075i
+GRID_CROSS_SIZE_PRIMARY        = 0i
+GRID_PEN_PRIMARY               = 0.25p
+GRID_CROSS_SIZE_SECONDARY      = 0i
+GRID_PEN_SECONDARY             = 0.5p
+MAP_SCALE_HEIGHT               = 0.075i
+POLAR_CAP                      = 85/90
+TICK_LENGTH                    = 0.075i
+TICK_PEN                       = 0.5p
+X_AXIS_LENGTH                  = 9i
+Y_AXIS_LENGTH                  = 6i
+X_ORIGIN                       = 1i
+Y_ORIGIN                       = 1i
+UNIX_TIME                      = FALSE
+UNIX_TIME_POS                  = BL/-0.75i/-0.75i
+UNIX_TIME_FORMAT               = %Y %b %d %H:%M:%S
 #-------- Color System Parameters -----------
-COLOR_BACKGROUND        = 0/0/0
-COLOR_FOREGROUND        = 255/255/255
-COLOR_NAN               = 128/128/128
-COLOR_IMAGE             = adobe
-COLOR_MODEL             = rgb
-HSV_MIN_SATURATION      = 1
-HSV_MAX_SATURATION      = 0.1
-HSV_MIN_VALUE           = 0.3
-HSV_MAX_VALUE           = 1
+COLOR_BACKGROUND               = 0/0/0
+COLOR_FOREGROUND               = 255/255/255
+COLOR_NAN                      = 128/128/128
+COLOR_IMAGE                    = adobe
+COLOR_MODEL                    = rgb
+HSV_MIN_SATURATION             = 1
+HSV_MAX_SATURATION             = 0.1
+HSV_MIN_VALUE                  = 0.3
+HSV_MAX_VALUE                  = 1
 #-------- PostScript Parameters -------------
-CHAR_ENCODING           = ISOLatin1+
-DOTS_PR_INCH            = 300
-N_COPIES                = 1
-PS_COLOR                = rgb
-PS_IMAGE_COMPRESS       = lzw
-PS_IMAGE_FORMAT         = ascii
-PS_LINE_CAP             = round
-PS_LINE_JOIN            = miter
-PS_MITER_LIMIT          = 35
-PS_VERBOSE              = FALSE
-GLOBAL_X_SCALE          = 1
-GLOBAL_Y_SCALE          = 1
+CHAR_ENCODING                  = ISOLatin1+
+DOTS_PR_INCH                   = 300
+N_COPIES                       = 1
+PS_COLOR                       = rgb
+PS_IMAGE_COMPRESS              = lzw
+PS_IMAGE_FORMAT                = ascii
+PS_LINE_CAP                    = round
+PS_LINE_JOIN                   = miter
+PS_MITER_LIMIT                 = 35
+PS_VERBOSE                     = FALSE
+GLOBAL_X_SCALE                 = 1
+GLOBAL_Y_SCALE                 = 1
 #-------- I/O Format Parameters -------------
-D_FORMAT                = %lg
-FIELD_DELIMITER         = tab
-GRIDFILE_SHORTHAND      = FALSE
-GRID_FORMAT             = nf
-INPUT_CLOCK_FORMAT      = hh:mm:ss
-INPUT_DATE_FORMAT       = yyyy-mm-dd
-IO_HEADER               = FALSE
-N_HEADER_RECS           = 1
-OUTPUT_CLOCK_FORMAT     = hh:mm:ss
-OUTPUT_DATE_FORMAT      = yyyy-mm-dd
-OUTPUT_DEGREE_FORMAT    = +D
-XY_TOGGLE               = FALSE
+D_FORMAT                       = %lg
+FIELD_DELIMITER                = tab
+GRIDFILE_SHORTHAND             = FALSE
+GRID_FORMAT                    = nf
+INPUT_CLOCK_FORMAT             = hh:mm:ss
+INPUT_DATE_FORMAT              = yyyy-mm-dd
+IO_HEADER                      = FALSE
+N_HEADER_RECS                  = 1
+OUTPUT_CLOCK_FORMAT            = hh:mm:ss
+OUTPUT_DATE_FORMAT             = yyyy-mm-dd
+OUTPUT_DEGREE_FORMAT           = +D
+XY_TOGGLE                      = FALSE
 #-------- Projection Parameters -------------
-ELLIPSOID               = WGS-84
-MAP_SCALE_FACTOR        = default
-MEASURE_UNIT            = inch
+ELLIPSOID                      = WGS-84
+MAP_SCALE_FACTOR               = default
+MEASURE_UNIT                   = inch
 #-------- Calendar/Time Parameters ----------
-TIME_FORMAT_PRIMARY     = full
-TIME_FORMAT_SECONDARY   = full
-TIME_EPOCH              = 2000-01-01T00:00:00
-TIME_IS_INTERVAL        = OFF
-TIME_INTERVAL_FRACTION  = 0.5
-TIME_LANGUAGE           = us
-TIME_UNIT               = d
-TIME_WEEK_START         = Sunday
-Y2K_OFFSET_YEAR         = 1950
+TIME_FORMAT_PRIMARY            = full
+TIME_FORMAT_SECONDARY          = full
+TIME_EPOCH                     = 2000-01-01T00:00:00
+TIME_IS_INTERVAL               = OFF
+TIME_INTERVAL_FRACTION         = 0.5
+TIME_LANGUAGE                  = us
+TIME_UNIT                      = d
+TIME_WEEK_START                = Sunday
+Y2K_OFFSET_YEAR                = 1950
 #-------- Miscellaneous Parameters ----------
-HISTORY                 = TRUE
-INTERPOLANT             = akima
-LINE_STEP               = 0.01i
-VECTOR_SHAPE            = 0
-VERBOSE                 = FALSE
+HISTORY                        = TRUE
+INTERPOLANT                    = akima
+LINE_STEP                      = 0.01i
+VECTOR_SHAPE                   = 0
+VERBOSE                        = FALSE
 '''
 
-_gmt_defaults_by_version['4.5.2'] = r'''
+_gmt_defaults_by_version['4.5.0'] = r'''
 #
-#       GMT-SYSTEM 4.5.2 [64-bit] Defaults file
+#       GMT-SYSTEM 4.5.x Defaults file
 #
 #-------- Plot Media Parameters -------------
-PAGE_COLOR              = white
-PAGE_ORIENTATION        = portrait
-PAPER_MEDIA             = a4+
+PAGE_COLOR                     = white
+PAGE_ORIENTATION               = portrait
+PAPER_MEDIA                    = a4+
 #-------- Basemap Annotation Parameters ------
-ANNOT_MIN_ANGLE         = 20
-ANNOT_MIN_SPACING       = 0
-ANNOT_FONT_PRIMARY      = Helvetica
-ANNOT_FONT_SIZE_PRIMARY = 14p
-ANNOT_OFFSET_PRIMARY    = 0.075i
-ANNOT_FONT_SECONDARY    = Helvetica
-ANNOT_FONT_SIZE_SECONDARY       = 16p
-ANNOT_OFFSET_SECONDARY  = 0.075i
-DEGREE_SYMBOL           = ring
-HEADER_FONT             = Helvetica
-HEADER_FONT_SIZE        = 36p
-HEADER_OFFSET           = 0.1875i
-LABEL_FONT              = Helvetica
-LABEL_FONT_SIZE         = 14p
-LABEL_OFFSET            = 0.1125i
-OBLIQUE_ANNOTATION      = 1
-PLOT_CLOCK_FORMAT       = hh:mm:ss
-PLOT_DATE_FORMAT        = yyyy-mm-dd
-PLOT_DEGREE_FORMAT      = +ddd:mm:ss
-Y_AXIS_TYPE             = hor_text
+ANNOT_MIN_ANGLE                = 20
+ANNOT_MIN_SPACING              = 0
+ANNOT_FONT_PRIMARY             = Helvetica
+ANNOT_FONT_SIZE_PRIMARY        = 14p
+ANNOT_OFFSET_PRIMARY           = 0.075i
+ANNOT_FONT_SECONDARY           = Helvetica
+ANNOT_FONT_SIZE_SECONDARY      = 16p
+ANNOT_OFFSET_SECONDARY         = 0.075i
+DEGREE_SYMBOL                  = ring
+HEADER_FONT                    = Helvetica
+HEADER_FONT_SIZE               = 36p
+HEADER_OFFSET                  = 0.1875i
+LABEL_FONT                     = Helvetica
+LABEL_FONT_SIZE                = 14p
+LABEL_OFFSET                   = 0.1125i
+OBLIQUE_ANNOTATION             = 1
+PLOT_CLOCK_FORMAT              = hh:mm:ss
+PLOT_DATE_FORMAT               = yyyy-mm-dd
+PLOT_DEGREE_FORMAT             = +ddd:mm:ss
+Y_AXIS_TYPE                    = hor_text
 #-------- Basemap Layout Parameters ---------
-BASEMAP_AXES            = WESN
-BASEMAP_FRAME_RGB       = black
-BASEMAP_TYPE            = plain
-FRAME_PEN               = 1.25p
-FRAME_WIDTH             = 0.075i
-GRID_CROSS_SIZE_PRIMARY = 0i
-GRID_PEN_PRIMARY        = 0.25p
-GRID_CROSS_SIZE_SECONDARY       = 0i
-GRID_PEN_SECONDARY      = 0.5p
-MAP_SCALE_HEIGHT        = 0.075i
-POLAR_CAP               = 85/90
-TICK_LENGTH             = 0.075i
-TICK_PEN                = 0.5p
-X_AXIS_LENGTH           = 9i
-Y_AXIS_LENGTH           = 6i
-X_ORIGIN                = 1i
-Y_ORIGIN                = 1i
-UNIX_TIME               = FALSE
-UNIX_TIME_POS           = BL/-0.75i/-0.75i
-UNIX_TIME_FORMAT        = %Y %b %d %H:%M:%S
+BASEMAP_AXES                   = WESN
+BASEMAP_FRAME_RGB              = black
+BASEMAP_TYPE                   = plain
+FRAME_PEN                      = 1.25p
+FRAME_WIDTH                    = 0.075i
+GRID_CROSS_SIZE_PRIMARY        = 0i
+GRID_PEN_PRIMARY               = 0.25p
+GRID_CROSS_SIZE_SECONDARY      = 0i
+GRID_PEN_SECONDARY             = 0.5p
+MAP_SCALE_HEIGHT               = 0.075i
+POLAR_CAP                      = 85/90
+TICK_LENGTH                    = 0.075i
+TICK_PEN                       = 0.5p
+X_AXIS_LENGTH                  = 9i
+Y_AXIS_LENGTH                  = 6i
+X_ORIGIN                       = 1i
+Y_ORIGIN                       = 1i
+UNIX_TIME                      = FALSE
+UNIX_TIME_POS                  = BL/-0.75i/-0.75i
+UNIX_TIME_FORMAT               = %Y %b %d %H:%M:%S
 #-------- Color System Parameters -----------
-COLOR_BACKGROUND        = black
-COLOR_FOREGROUND        = white
-COLOR_NAN               = 128
-COLOR_IMAGE             = adobe
-COLOR_MODEL             = rgb
-HSV_MIN_SATURATION      = 1
-HSV_MAX_SATURATION      = 0.1
-HSV_MIN_VALUE           = 0.3
-HSV_MAX_VALUE           = 1
+COLOR_BACKGROUND               = black
+COLOR_FOREGROUND               = white
+COLOR_NAN                      = 128
+COLOR_IMAGE                    = adobe
+COLOR_MODEL                    = rgb
+HSV_MIN_SATURATION             = 1
+HSV_MAX_SATURATION             = 0.1
+HSV_MIN_VALUE                  = 0.3
+HSV_MAX_VALUE                  = 1
 #-------- PostScript Parameters -------------
-CHAR_ENCODING           = ISOLatin1+
-DOTS_PR_INCH            = 300
-GLOBAL_X_SCALE          = 1
-GLOBAL_Y_SCALE          = 1
-N_COPIES                = 1
-PS_COLOR                = rgb
-PS_IMAGE_COMPRESS       = lzw
-PS_IMAGE_FORMAT         = ascii
-PS_LINE_CAP             = round
-PS_LINE_JOIN            = miter
-PS_MITER_LIMIT          = 35
-PS_VERBOSE              = FALSE
-TRANSPARENCY            = 0
+CHAR_ENCODING                  = ISOLatin1+
+DOTS_PR_INCH                   = 300
+GLOBAL_X_SCALE                 = 1
+GLOBAL_Y_SCALE                 = 1
+N_COPIES                       = 1
+PS_COLOR                       = rgb
+PS_IMAGE_COMPRESS              = lzw
+PS_IMAGE_FORMAT                = ascii
+PS_LINE_CAP                    = round
+PS_LINE_JOIN                   = miter
+PS_MITER_LIMIT                 = 35
+PS_VERBOSE                     = FALSE
+TRANSPARENCY                   = 0
 #-------- I/O Format Parameters -------------
-D_FORMAT                = %.12lg
-FIELD_DELIMITER         = tab
-GRIDFILE_FORMAT         = nf
-GRIDFILE_SHORTHAND      = FALSE
-INPUT_CLOCK_FORMAT      = hh:mm:ss
-INPUT_DATE_FORMAT       = yyyy-mm-dd
-IO_HEADER               = FALSE
-N_HEADER_RECS           = 1
-NAN_RECORDS             = pass
-OUTPUT_CLOCK_FORMAT     = hh:mm:ss
-OUTPUT_DATE_FORMAT      = yyyy-mm-dd
-OUTPUT_DEGREE_FORMAT    = D
-XY_TOGGLE               = FALSE
+D_FORMAT                       = %.12lg
+FIELD_DELIMITER                = tab
+GRIDFILE_FORMAT                = nf
+GRIDFILE_SHORTHAND             = FALSE
+INPUT_CLOCK_FORMAT             = hh:mm:ss
+INPUT_DATE_FORMAT              = yyyy-mm-dd
+IO_HEADER                      = FALSE
+N_HEADER_RECS                  = 1
+NAN_RECORDS                    = pass
+OUTPUT_CLOCK_FORMAT            = hh:mm:ss
+OUTPUT_DATE_FORMAT             = yyyy-mm-dd
+OUTPUT_DEGREE_FORMAT           = D
+XY_TOGGLE                      = FALSE
 #-------- Projection Parameters -------------
-ELLIPSOID               = WGS-84
-MAP_SCALE_FACTOR        = default
-MEASURE_UNIT            = inch
+ELLIPSOID                      = WGS-84
+MAP_SCALE_FACTOR               = default
+MEASURE_UNIT                   = inch
 #-------- Calendar/Time Parameters ----------
-TIME_FORMAT_PRIMARY     = full
-TIME_FORMAT_SECONDARY   = full
-TIME_EPOCH              = 2000-01-01T00:00:00
-TIME_IS_INTERVAL        = OFF
-TIME_INTERVAL_FRACTION  = 0.5
-TIME_LANGUAGE           = us
-TIME_UNIT               = d
-TIME_WEEK_START         = Sunday
-Y2K_OFFSET_YEAR         = 1950
+TIME_FORMAT_PRIMARY            = full
+TIME_FORMAT_SECONDARY          = full
+TIME_EPOCH                     = 2000-01-01T00:00:00
+TIME_IS_INTERVAL               = OFF
+TIME_INTERVAL_FRACTION         = 0.5
+TIME_LANGUAGE                  = us
+TIME_UNIT                      = d
+TIME_WEEK_START                = Sunday
+Y2K_OFFSET_YEAR                = 1950
 #-------- Miscellaneous Parameters ----------
-HISTORY                 = TRUE
-INTERPOLANT             = akima
-LINE_STEP               = 0.01i
-VECTOR_SHAPE            = 0
-VERBOSE                 = FALSE
+HISTORY                        = TRUE
+INTERPOLANT                    = akima
+LINE_STEP                      = 0.01i
+VECTOR_SHAPE                   = 0
+VERBOSE                        = FALSE
 '''
 
-_gmt_defaults_by_version['4.5.3'] = r'''
+_gmt_defaults_by_version['5.1.0'] = r'''
 #
-#       GMT-SYSTEM 4.5.3 (CVS Jun 18 2010 10:56:07) [64-bit] Defaults file
-#
-#-------- Plot Media Parameters -------------
-PAGE_COLOR              = white
-PAGE_ORIENTATION        = portrait
-PAPER_MEDIA             = a4+
-#-------- Basemap Annotation Parameters ------
-ANNOT_MIN_ANGLE         = 20
-ANNOT_MIN_SPACING       = 0
-ANNOT_FONT_PRIMARY      = Helvetica
-ANNOT_FONT_SIZE_PRIMARY = 14p
-ANNOT_OFFSET_PRIMARY    = 0.075i
-ANNOT_FONT_SECONDARY    = Helvetica
-ANNOT_FONT_SIZE_SECONDARY       = 16p
-ANNOT_OFFSET_SECONDARY  = 0.075i
-DEGREE_SYMBOL           = ring
-HEADER_FONT             = Helvetica
-HEADER_FONT_SIZE        = 36p
-HEADER_OFFSET           = 0.1875i
-LABEL_FONT              = Helvetica
-LABEL_FONT_SIZE         = 14p
-LABEL_OFFSET            = 0.1125i
-OBLIQUE_ANNOTATION      = 1
-PLOT_CLOCK_FORMAT       = hh:mm:ss
-PLOT_DATE_FORMAT        = yyyy-mm-dd
-PLOT_DEGREE_FORMAT      = +ddd:mm:ss
-Y_AXIS_TYPE             = hor_text
-#-------- Basemap Layout Parameters ---------
-BASEMAP_AXES            = WESN
-BASEMAP_FRAME_RGB       = black
-BASEMAP_TYPE            = plain
-FRAME_PEN               = 1.25p
-FRAME_WIDTH             = 0.075i
-GRID_CROSS_SIZE_PRIMARY = 0i
-GRID_PEN_PRIMARY        = 0.25p
-GRID_CROSS_SIZE_SECONDARY       = 0i
-GRID_PEN_SECONDARY      = 0.5p
-MAP_SCALE_HEIGHT        = 0.075i
-POLAR_CAP               = 85/90
-TICK_LENGTH             = 0.075i
-TICK_PEN                = 0.5p
-X_AXIS_LENGTH           = 9i
-Y_AXIS_LENGTH           = 6i
-X_ORIGIN                = 1i
-Y_ORIGIN                = 1i
-UNIX_TIME               = FALSE
-UNIX_TIME_POS           = BL/-0.75i/-0.75i
-UNIX_TIME_FORMAT        = %Y %b %d %H:%M:%S
-#-------- Color System Parameters -----------
-COLOR_BACKGROUND        = black
-COLOR_FOREGROUND        = white
-COLOR_NAN               = 128
-COLOR_IMAGE             = adobe
-COLOR_MODEL             = rgb
-HSV_MIN_SATURATION      = 1
-HSV_MAX_SATURATION      = 0.1
-HSV_MIN_VALUE           = 0.3
-HSV_MAX_VALUE           = 1
-#-------- PostScript Parameters -------------
-CHAR_ENCODING           = ISOLatin1+
-DOTS_PR_INCH            = 300
-GLOBAL_X_SCALE          = 1
-GLOBAL_Y_SCALE          = 1
-N_COPIES                = 1
-PS_COLOR                = rgb
-PS_IMAGE_COMPRESS       = lzw
-PS_IMAGE_FORMAT         = ascii
-PS_LINE_CAP             = round
-PS_LINE_JOIN            = miter
-PS_MITER_LIMIT          = 35
-PS_VERBOSE              = FALSE
-TRANSPARENCY            = 0
-#-------- I/O Format Parameters -------------
-D_FORMAT                = %.12lg
-FIELD_DELIMITER         = tab
-GRIDFILE_FORMAT         = nf
-GRIDFILE_SHORTHAND      = FALSE
-INPUT_CLOCK_FORMAT      = hh:mm:ss
-INPUT_DATE_FORMAT       = yyyy-mm-dd
-IO_HEADER               = FALSE
-N_HEADER_RECS           = 1
-NAN_RECORDS             = pass
-OUTPUT_CLOCK_FORMAT     = hh:mm:ss
-OUTPUT_DATE_FORMAT      = yyyy-mm-dd
-OUTPUT_DEGREE_FORMAT    = D
-XY_TOGGLE               = FALSE
-#-------- Projection Parameters -------------
-ELLIPSOID               = WGS-84
-MAP_SCALE_FACTOR        = default
-MEASURE_UNIT            = inch
-#-------- Calendar/Time Parameters ----------
-TIME_FORMAT_PRIMARY     = full
-TIME_FORMAT_SECONDARY   = full
-TIME_EPOCH              = 2000-01-01T00:00:00
-TIME_IS_INTERVAL        = OFF
-TIME_INTERVAL_FRACTION  = 0.5
-TIME_LANGUAGE           = us
-TIME_UNIT               = d
-TIME_WEEK_START         = Sunday
-Y2K_OFFSET_YEAR         = 1950
-#-------- Miscellaneous Parameters ----------
-HISTORY                 = TRUE
-INTERPOLANT             = akima
-LINE_STEP               = 0.01i
-VECTOR_SHAPE            = 0
-VERBOSE                 = FALSE
-'''
-
-_gmt_defaults_by_version['5.1.2'] = r'''
-#
-# GMT 5.1.2 Defaults file
-# vim:sw=8:ts=8:sts=8
-# $Revision: 13836 $
-# $LastChangedDate: 2014-12-20 03:45:42 -1000 (Sat, 20 Dec 2014) $
+# GMT 5.1.x Defaults file
 #
 # COLOR Parameters
 #
-COLOR_BACKGROUND = black
-COLOR_FOREGROUND = white
-COLOR_NAN = 127.5
-COLOR_MODEL = none
-COLOR_HSV_MIN_S = 1
-COLOR_HSV_MAX_S = 0.1
-COLOR_HSV_MIN_V = 0.3
-COLOR_HSV_MAX_V = 1
+COLOR_BACKGROUND               = black
+COLOR_FOREGROUND               = white
+COLOR_NAN                      = 127.5
+COLOR_MODEL                    = none
+COLOR_HSV_MIN_S                = 1
+COLOR_HSV_MAX_S                = 0.1
+COLOR_HSV_MIN_V                = 0.3
+COLOR_HSV_MAX_V                = 1
 #
 # DIR Parameters
 #
-DIR_DATA =
-DIR_DCW =
+DIR_DATA  =
+DIR_DCW   =
 DIR_GSHHG =
 #
 # FONT Parameters
 #
-FONT_ANNOT_PRIMARY = 14p,Helvetica,black
-FONT_ANNOT_SECONDARY = 16p,Helvetica,black
-FONT_LABEL = 14p,Helvetica,black
-FONT_LOGO = 8p,Helvetica,black
-FONT_TITLE = 24p,Helvetica,black
+FONT_ANNOT_PRIMARY             = 14p, Helvetica, black
+FONT_ANNOT_SECONDARY           = 16p, Helvetica, black
+FONT_LABEL                     = 14p, Helvetica, black
+FONT_LOGO                      = 8p,  Helvetica, black
+FONT_TITLE                     = 24p, Helvetica, black
 #
 # FORMAT Parameters
 #
-FORMAT_CLOCK_IN = hh:mm:ss
-FORMAT_CLOCK_OUT = hh:mm:ss
-FORMAT_CLOCK_MAP = hh:mm:ss
-FORMAT_DATE_IN = yyyy-mm-dd
-FORMAT_DATE_OUT = yyyy-mm-dd
-FORMAT_DATE_MAP = yyyy-mm-dd
-FORMAT_GEO_OUT = D
-FORMAT_GEO_MAP = ddd:mm:ss
-FORMAT_FLOAT_OUT = %.12g
-FORMAT_FLOAT_MAP = %.12g
-FORMAT_TIME_PRIMARY_MAP = full
-FORMAT_TIME_SECONDARY_MAP = full
-FORMAT_TIME_STAMP = %Y %b %d %H:%M:%S
+FORMAT_CLOCK_IN                = hh:mm:ss
+FORMAT_CLOCK_OUT               = hh:mm:ss
+FORMAT_CLOCK_MAP               = hh:mm:ss
+FORMAT_DATE_IN                 = yyyy-mm-dd
+FORMAT_DATE_OUT                = yyyy-mm-dd
+FORMAT_DATE_MAP                = yyyy-mm-dd
+FORMAT_GEO_OUT                 = D
+FORMAT_GEO_MAP                 = ddd:mm:ss
+FORMAT_FLOAT_OUT               = %.12g
+FORMAT_FLOAT_MAP               = %.12g
+FORMAT_TIME_PRIMARY_MAP        = full
+FORMAT_TIME_SECONDARY_MAP      = full
+FORMAT_TIME_STAMP              = %Y %b %d %H:%M:%S
 #
 # GMT Miscellaneous Parameters
 #
-GMT_COMPATIBILITY = 4
-GMT_CUSTOM_LIBS =
-GMT_EXTRAPOLATE_VAL = NaN
-GMT_FFT = auto
-GMT_HISTORY = true
-GMT_INTERPOLANT = akima
-GMT_TRIANGULATE = Shewchuk
-GMT_VERBOSE = compat
+GMT_COMPATIBILITY              = 4
+GMT_CUSTOM_LIBS                =
+GMT_EXTRAPOLATE_VAL            = NaN
+GMT_FFT                        = auto
+GMT_HISTORY                    = true
+GMT_INTERPOLANT                = akima
+GMT_LANGUAGE                   = us
+GMT_TRIANGULATE                = Shewchuk
+GMT_VERBOSE                    = compat
 #
 # I/O Parameters
 #
-IO_COL_SEPARATOR = tab
-IO_GRIDFILE_FORMAT = nf
-IO_GRIDFILE_SHORTHAND = false
-IO_HEADER = false
-IO_N_HEADER_RECS = 0
-IO_NAN_RECORDS = pass
-IO_NC4_CHUNK_SIZE = auto
-IO_NC4_DEFLATION_LEVEL = 3
-IO_LONLAT_TOGGLE = false
-IO_SEGMENT_MARKER = >
+IO_COL_SEPARATOR               = tab
+IO_GRIDFILE_FORMAT             = nf
+IO_GRIDFILE_SHORTHAND          = false
+IO_HEADER                      = false
+IO_N_HEADER_RECS               = 0
+IO_NAN_RECORDS                 = pass
+IO_NC4_CHUNK_SIZE              = auto
+IO_NC4_DEFLATION_LEVEL         = 3
+IO_LONLAT_TOGGLE               = false
+IO_SEGMENT_MARKER              = >
 #
 # MAP Parameters
 #
-MAP_ANNOT_MIN_ANGLE = 20
-MAP_ANNOT_MIN_SPACING = 0p
-MAP_ANNOT_OBLIQUE = 1
-MAP_ANNOT_OFFSET_PRIMARY = 0.075i
-MAP_ANNOT_OFFSET_SECONDARY = 0.075i
-MAP_ANNOT_ORTHO = we
-MAP_DEFAULT_PEN = default,black
-MAP_DEGREE_SYMBOL = ring
-MAP_FRAME_AXES = WESNZ
-MAP_FRAME_PEN = thicker,black
-MAP_FRAME_TYPE = fancy
-MAP_FRAME_WIDTH = 5p
-MAP_GRID_CROSS_SIZE_PRIMARY = 0p
-MAP_GRID_CROSS_SIZE_SECONDARY = 0p
-MAP_GRID_PEN_PRIMARY = default,black
-MAP_GRID_PEN_SECONDARY = thinner,black
-MAP_LABEL_OFFSET = 0.1944i
-MAP_LINE_STEP = 0.75p
-MAP_LOGO = false
-MAP_LOGO_POS = BL/-54p/-54p
-MAP_ORIGIN_X = 1i
-MAP_ORIGIN_Y = 1i
-MAP_POLAR_CAP = 85/90
-MAP_SCALE_HEIGHT = 5p
-MAP_TICK_LENGTH_PRIMARY = 5p/2.5p
-MAP_TICK_LENGTH_SECONDARY = 15p/3.75p
-MAP_TICK_PEN_PRIMARY = thinner,black
-MAP_TICK_PEN_SECONDARY = thinner,black
-MAP_TITLE_OFFSET = 14p
-MAP_VECTOR_SHAPE = 0
+MAP_ANNOT_MIN_ANGLE            = 20
+MAP_ANNOT_MIN_SPACING          = 0p
+MAP_ANNOT_OBLIQUE              = 1
+MAP_ANNOT_OFFSET_PRIMARY       = 0.075i
+MAP_ANNOT_OFFSET_SECONDARY     = 0.075i
+MAP_ANNOT_ORTHO                = we
+MAP_DEFAULT_PEN                = default, black
+MAP_DEGREE_SYMBOL              = ring
+MAP_FRAME_AXES                 = WESNZ
+MAP_FRAME_PEN                  = thicker, black
+MAP_FRAME_TYPE                 = fancy
+MAP_FRAME_WIDTH                = 5p
+MAP_GRID_CROSS_SIZE_PRIMARY    = 0p
+MAP_GRID_CROSS_SIZE_SECONDARY  = 0p
+MAP_GRID_PEN_PRIMARY           = default, black
+MAP_GRID_PEN_SECONDARY         = thinner, black
+MAP_LABEL_OFFSET               = 0.1944i
+MAP_LINE_STEP                  = 0.75p
+MAP_LOGO                       = false
+MAP_LOGO_POS                   = BL/-54p/-54p
+MAP_ORIGIN_X                   = 1i
+MAP_ORIGIN_Y                   = 1i
+MAP_POLAR_CAP                  = 85/90
+MAP_SCALE_HEIGHT               = 5p
+MAP_TICK_LENGTH_PRIMARY        = 5p/2.5p
+MAP_TICK_LENGTH_SECONDARY      = 15p/3.75p
+MAP_TICK_PEN_PRIMARY           = thinner, black
+MAP_TICK_PEN_SECONDARY         = thinner, black
+MAP_TITLE_OFFSET               = 14p
+MAP_VECTOR_SHAPE               = 0
 #
 # Projection Parameters
 #
-PROJ_AUX_LATITUDE = authalic
-PROJ_ELLIPSOID = WGS-84
-PROJ_LENGTH_UNIT = cm
-PROJ_MEAN_RADIUS = authalic
-PROJ_SCALE_FACTOR = default
+PROJ_AUX_LATITUDE              = authalic
+PROJ_ELLIPSOID                 = WGS-84
+PROJ_LENGTH_UNIT               = cm
+PROJ_MEAN_RADIUS               = authalic
+PROJ_SCALE_FACTOR              = default
 #
 # PostScript Parameters
 #
-PS_CHAR_ENCODING = ISOLatin1+
-PS_COLOR_MODEL = rgb
-PS_COMMENTS = false
-PS_IMAGE_COMPRESS = deflate,5
-PS_LINE_CAP = butt
-PS_LINE_JOIN = miter
-PS_MITER_LIMIT = 35
-PS_MEDIA = a4
-PS_PAGE_COLOR = white
-PS_PAGE_ORIENTATION = portrait
-PS_SCALE_X = 1
-PS_SCALE_Y = 1
-PS_TRANSPARENCY = Normal
+PS_CHAR_ENCODING               = ISOLatin1+
+PS_COLOR_MODEL                 = rgb
+PS_COMMENTS                    = false
+PS_IMAGE_COMPRESS              = deflate, 5
+PS_LINE_CAP                    = butt
+PS_LINE_JOIN                   = miter
+PS_MITER_LIMIT                 = 35
+PS_MEDIA                       = a4
+PS_PAGE_COLOR                  = white
+PS_PAGE_ORIENTATION            = portrait
+PS_SCALE_X                     = 1
+PS_SCALE_Y                     = 1
+PS_TRANSPARENCY                = Normal
 #
 # Calendar/Time Parameters
 #
-TIME_EPOCH = 1970-01-01T00:00:00
-TIME_IS_INTERVAL = off
-TIME_INTERVAL_FRACTION = 0.5
-TIME_LANGUAGE = us
-TIME_UNIT = s
-TIME_WEEK_START = Monday
-TIME_Y2K_OFFSET_YEAR = 1950
+TIME_EPOCH                     = 1970-01-01T00:00:00
+TIME_IS_INTERVAL               = off
+TIME_INTERVAL_FRACTION         = 0.5
+TIME_UNIT                      = s
+TIME_WEEK_START                = Monday
+TIME_Y2K_OFFSET_YEAR           = 1950
 '''
 
-_gmt_defaults_by_version['5.4.5'] = r'''
+_gmt_defaults_by_version['5.4.0'] = r'''
 #
-# GMT 5.4.5 Defaults file
+# GMT 5.4.x Defaults file
 #
 # COLOR Parameters
 #

@@ -5,7 +5,7 @@ sudo rm  *.deb && sudo rm -r ./build
 
 python setup.py config build
 
-sudo checkinstall -D --pkgname=python-gmtpy --pkgversion=0:0.1-dev-git \
+sudo checkinstall -D --pkgname=python-gmtpy --pkgversion=0:0.2.0-dev-git \
 --provides=python-gmtpy --default --backup=no \
 --deldoc=yes --deldesc=yes --delspec=yes \
 --fstrans=no \
